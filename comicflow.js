@@ -1423,6 +1423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.innerHTML = `
             <div class="card-cover-wrap">
                 <span class="card-lang-pill">${scanBadgeText}</span>
+                <span class="card-issue-pill">${comic.issue}</span>
                 ${comic.cover && comic.cover.img ? `<img src="${comic.cover.img}" alt="${comic.title}" class="cover-image-pic">` : `
                 <div class="card-cover-art" style="background: ${comic.cover.bg};">
                     <div class="cover-top-strip">
@@ -1441,7 +1442,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="card-details">
                 <div class="card-row-top">
-                    <span class="card-issue">${comic.issue} • ${comic.year}</span>
                     <span class="card-title">${comic.title}</span>
                 </div>
                 <div class="card-row-bottom">
@@ -2837,10 +2837,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentCards = Array.from(document.querySelectorAll('#catalog-grid .comic-card'));
 
         currentCards.forEach(card => {
+            const comicData = COMICS_DATA[card.dataset.comicId];
             const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
             const author = (card.querySelector('.card-author')?.textContent || '').toLowerCase();
-            const year = (card.querySelector('.card-year')?.textContent || '').toLowerCase();
-            const issue = (card.querySelector('.card-issue')?.textContent || '').toLowerCase();
+            const year = (comicData?.year || '').toLowerCase();
+            const issue = (card.querySelector('.card-issue-pill, .card-issue')?.textContent || comicData?.issue || '').toLowerCase();
             const tags = (card.dataset.tags || '').toLowerCase();
 
             const isMatch = !q ||
