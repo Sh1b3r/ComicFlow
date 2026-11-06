@@ -3383,7 +3383,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     pageEl.innerHTML = `
                         <div class="strip-image-wrapper">
                             <img src="${pageData.img}" alt="${comic.title} - ${I18N[currentAppLanguage].page} ${pIdx + 1}" class="reader-strip-image" loading="${pIdx < 2 ? 'eager' : 'lazy'}">
-                            <div class="strip-page-badge">${I18N[currentAppLanguage].page} ${pIdx + 1}</div>
                         </div>
                     `;
                 } else {

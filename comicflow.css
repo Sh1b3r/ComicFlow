@@ -2816,21 +2816,7 @@ body.reader-mode-page .reader-page-nav-bar {
 }
 
 .strip-page-badge {
-    position: absolute;
-    bottom: 12px;
-    right: 14px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: rgba(11, 12, 16, 0.78);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.85);
-    pointer-events: none;
-    user-select: none;
-    letter-spacing: 0.02em;
-    z-index: 2;
+    display: none !important;
 }
 
 .reader-end-chapter-card {
