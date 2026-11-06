@@ -1,7 +1,7 @@
-const CACHE_NAME = 'comicflow-v1';
+const CACHE_NAME = 'comicflow-v2';
 const ASSETS = [
     './',
-    './comicflow.html',
+    './index.html',
     './comicflow.css',
     './comicflow.js',
     './favicon.svg',
@@ -41,7 +41,7 @@ self.addEventListener('fetch', (e) => {
             return caches.match(e.request).then((res) => {
                 if (res) return res;
                 if (e.request.mode === 'navigate') {
-                    return caches.match('./comicflow.html');
+                    return caches.match('./index.html');
                 }
             });
         })

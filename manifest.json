@@ -2,7 +2,7 @@
   "name": "ComicFlow",
   "short_name": "ComicFlow",
   "description": "Читалка та каталог коміксів",
-  "start_url": "./comicflow.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
