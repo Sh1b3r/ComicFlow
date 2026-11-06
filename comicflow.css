@@ -986,7 +986,10 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
     display: flex;
     position: relative;
     z-index: 2;
-    animation: viewFadeIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-view.active:not(.slide-from-right):not(.slide-from-left):not(.slide-from-pop) {
+    animation: viewFadeIn 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .app-view.view-exiting {
@@ -1000,94 +1003,120 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
 }
 
 .app-view.view-exiting-left {
-    animation: slideViewOutLeft 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: slideViewOutLeft 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    will-change: transform;
 }
 
 .app-view.view-exiting-right {
-    animation: slideViewOutRight 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: slideViewOutRight 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    will-change: transform;
+}
+
+.app-view.view-exiting-push {
+    animation: slideViewOutParallax 0.32s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    will-change: transform, opacity;
 }
 
 .app-view.view-exiting-fade {
-    animation: viewFadeOut 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: viewFadeOut 0.22s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .app-view.slide-from-right {
-    animation: slideViewRight 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: slideViewRight 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
 .app-view.slide-from-left {
-    animation: slideViewLeft 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: slideViewLeft 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+
+.app-view.slide-from-pop {
+    animation: slideViewInParallax 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform, opacity;
 }
 
 @keyframes viewFadeIn {
     0% {
         opacity: 0;
-        transform: translate3d(0, 10px, 0) scale(0.99);
     }
 
     100% {
         opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
     }
 }
 
 @keyframes viewFadeOut {
     0% {
         opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
     }
 
     100% {
         opacity: 0;
-        transform: translate3d(0, -6px, 0) scale(0.99);
     }
 }
 
 @keyframes slideViewRight {
     0% {
-        opacity: 0;
-        transform: translate3d(28px, 0, 0);
+        transform: translate3d(100%, 0, 0);
     }
 
     100% {
-        opacity: 1;
         transform: translate3d(0, 0, 0);
     }
 }
 
 @keyframes slideViewOutLeft {
     0% {
-        opacity: 1;
         transform: translate3d(0, 0, 0);
     }
 
     100% {
-        opacity: 0;
-        transform: translate3d(-28px, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
 }
 
 @keyframes slideViewLeft {
     0% {
-        opacity: 0;
-        transform: translate3d(-28px, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
 
     100% {
-        opacity: 1;
         transform: translate3d(0, 0, 0);
     }
 }
 
 @keyframes slideViewOutRight {
     0% {
-        opacity: 1;
         transform: translate3d(0, 0, 0);
     }
 
     100% {
-        opacity: 0;
-        transform: translate3d(28px, 0, 0);
+        transform: translate3d(100%, 0, 0);
+    }
+}
+
+@keyframes slideViewOutParallax {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(-28%, 0, 0);
+        opacity: 0.65;
+    }
+}
+
+@keyframes slideViewInParallax {
+    0% {
+        transform: translate3d(-28%, 0, 0);
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
     }
 }
 

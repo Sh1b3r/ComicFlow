@@ -1638,29 +1638,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetView = document.getElementById(`view-${viewName}`);
 
         if (outgoingView && outgoingView !== targetView) {
-            outgoingView.classList.remove('active', 'slide-from-right', 'slide-from-left', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+            outgoingView.classList.remove('active', 'slide-from-right', 'slide-from-left', 'slide-from-pop', 'view-exiting-left', 'view-exiting-right', 'view-exiting-push', 'view-exiting-fade');
             outgoingView.classList.add('view-exiting');
-            if (direction === 'right') outgoingView.classList.add('view-exiting-left');
+            if (direction === 'push') outgoingView.classList.add('view-exiting-push');
+            else if (direction === 'pop') outgoingView.classList.add('view-exiting-right');
+            else if (direction === 'right') outgoingView.classList.add('view-exiting-left');
             else if (direction === 'left') outgoingView.classList.add('view-exiting-right');
             else outgoingView.classList.add('view-exiting-fade');
 
             setTimeout(() => {
-                outgoingView.classList.remove('view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
-            }, 300);
+                outgoingView.classList.remove('view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-push', 'view-exiting-fade');
+            }, 340);
         }
 
         views.forEach(v => {
             if (v !== outgoingView && v !== targetView) {
-                v.classList.remove('active', 'slide-from-right', 'slide-from-left', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+                v.classList.remove('active', 'slide-from-right', 'slide-from-left', 'slide-from-pop', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-push', 'view-exiting-fade');
             }
         });
 
         if (targetView) {
-            targetView.classList.remove('slide-from-right', 'slide-from-left', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+            targetView.classList.remove('slide-from-right', 'slide-from-left', 'slide-from-pop', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-push', 'view-exiting-fade');
             targetView.classList.add('active');
-            if (direction === 'right') targetView.classList.add('slide-from-right');
+            if (direction === 'push') targetView.classList.add('slide-from-right');
+            else if (direction === 'pop') targetView.classList.add('slide-from-pop');
+            else if (direction === 'right') targetView.classList.add('slide-from-right');
             else if (direction === 'left') targetView.classList.add('slide-from-left');
-            setTimeout(() => targetView.classList.remove('slide-from-right', 'slide-from-left'), 320);
+            setTimeout(() => targetView.classList.remove('slide-from-right', 'slide-from-left', 'slide-from-pop'), 340);
         }
 
         navButtons.forEach(btn => {
@@ -1745,7 +1749,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchstart', (e) => {
         if (!isBottomNavActive()) return;
         if (document.querySelector('.settings-subdialog-overlay.open')) return;
-        if (!MAIN_NAV_VIEWS.includes(currentActiveView)) return;
+        if (!MAIN_NAV_VIEWS.includes(currentActiveView) && currentActiveView !== 'title') return;
         if (e.touches.length !== 1) return;
         const touch = e.touches[0];
         navSwipeStartX = touch.clientX;
@@ -1757,13 +1761,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchend', (e) => {
         if (!isBottomNavActive()) return;
         if (document.querySelector('.settings-subdialog-overlay.open')) return;
-        if (!MAIN_NAV_VIEWS.includes(currentActiveView)) return;
         if (navSwipeBlocked) return;
         if (!e.changedTouches || e.changedTouches.length === 0) return;
         const touch = e.changedTouches[0];
         const dx = touch.clientX - navSwipeStartX;
         const dy = touch.clientY - navSwipeStartY;
         const dt = Date.now() - navSwipeStartTime;
+
+        if (currentActiveView === 'title' && dx > 48 && Math.abs(dx) > Math.abs(dy) * 1.3 && navSwipeStartX < 60) {
+            switchView('home', true, 'pop');
+            return;
+        }
+
+        if (!MAIN_NAV_VIEWS.includes(currentActiveView)) return;
 
         if (dt < 650 && Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.3) {
             const curIdx = MAIN_NAV_VIEWS.indexOf(currentActiveView);
@@ -1803,8 +1813,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => switchView('home'));
     });
 
-    if (titleBackCatalog) titleBackCatalog.addEventListener('click', () => switchView('home', true, 'left'));
-    if (titleQuickBack) titleQuickBack.addEventListener('click', () => switchView('home', true, 'left'));
+    if (titleBackCatalog) titleBackCatalog.addEventListener('click', () => switchView('home', true, 'pop'));
+    if (titleQuickBack) titleQuickBack.addEventListener('click', () => switchView('home', true, 'pop'));
 
     function getSearchHistory() {
         try {
@@ -3101,7 +3111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBookmarkBtn.textContent = isBookmarked ? I18N[currentAppLanguage].inBookmarks : I18N[currentAppLanguage].addBookmark;
     }
 
-    function openComicTitle(comicId, shouldUpdateHash = true, direction = 'right') {
+    function openComicTitle(comicId, shouldUpdateHash = true, direction = 'push') {
         const comic = COMICS_DATA[comicId] || COMICS_DATA['secret-wars'];
         currentComicId = comic.id;
 
@@ -3405,12 +3415,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const endBackBtn = endCard.querySelector('#reader-end-back-title-btn');
             if (endBackBtn) {
                 endBackBtn.addEventListener('click', () => {
-                    openComicTitle(comic.id, true, 'left');
+                    openComicTitle(comic.id, true, 'pop');
                 });
             }
         }
 
-        switchView('reader', false, 'right');
+        switchView('reader', false, 'push');
 
         currentReaderPageIndex = 0;
         setReaderMode(currentReaderMode);
@@ -3448,7 +3458,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (readerBackToTitle) {
         readerBackToTitle.addEventListener('click', () => {
-            openComicTitle(currentComicId, true, 'left');
+            openComicTitle(currentComicId, true, 'pop');
         });
     }
 
