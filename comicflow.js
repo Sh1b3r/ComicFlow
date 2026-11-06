@@ -1423,7 +1423,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.innerHTML = `
             <div class="card-cover-wrap">
                 <span class="card-lang-pill">${scanBadgeText}</span>
-                <span class="card-issue-pill">${comic.issue}</span>
                 ${comic.cover && comic.cover.img ? `<img src="${comic.cover.img}" alt="${comic.title}" class="cover-image-pic">` : `
                 <div class="card-cover-art" style="background: ${comic.cover.bg};">
                     <div class="cover-top-strip">
@@ -1441,6 +1440,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`}
             </div>
             <div class="card-details">
+                <div class="card-row-meta">
+                    <span class="card-issue">${comic.issue}</span>
+                    <span class="card-year">${comic.year}</span>
+                </div>
                 <div class="card-row-top">
                     <span class="card-title">${comic.title}</span>
                 </div>
