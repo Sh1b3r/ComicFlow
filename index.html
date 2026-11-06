@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ComicFlow</title>
-    <meta name="theme-color" id="meta-theme-color" content="#E62429">
+    <meta name="theme-color" id="meta-theme-color" content="#0B0C10">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,12 +15,25 @@
     <link id="dynamic-apple-icon" rel="apple-touch-icon" href="favicon.svg">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="comicflow.css">
+    <script>
+        try {
+            const a = localStorage.getItem('comicflow_accent');
+            if (a) {
+                document.documentElement.style.setProperty('--accent', a);
+                const h = a.replace('#', '');
+                const r = parseInt(h.substring(0, 2), 16);
+                const g = parseInt(h.substring(2, 4), 16);
+                const b = parseInt(h.substring(4, 6), 16);
+                document.documentElement.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
+            }
+        } catch (_) {}
+    </script>
     <script src="comicflow.js" defer></script>
 </head>
 
 <body>
     <div id="preloader-overlay" class="preloader-overlay">
-        <div class="logo-link anim-strike" id="preloader-logo" style="--logo-size: 88px;" title="ComicFlow">
+        <div class="logo-link anim-strike no-box" id="preloader-logo" style="--logo-size: 88px;" title="ComicFlow">
             <svg class="logo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <polygon class="panel-left" pathLength="100" points="10,46 22,18 32,18 20,46" fill="#141720"
                     stroke="var(--text-muted)" stroke-width="2.5"></polygon>
@@ -1078,45 +1091,6 @@
                         data-i18n="btnSave">Зберегти</button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="pwa-install-banner" id="pwa-install-banner" role="dialog" aria-labelledby="pwa-banner-title"
-        aria-modal="false">
-        <button type="button" class="pwa-close-btn" id="pwa-close-btn" aria-label="Закрити">×</button>
-        <div class="pwa-install-content">
-            <div class="pwa-install-icon">
-                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="64" height="64" rx="14" fill="#141720" stroke="var(--border)" stroke-width="2" />
-                    <g transform="translate(32, 32) scale(0.7) translate(-32, -32)">
-                        <polygon points="10,46 22,18 32,18 20,46" fill="#1C202B" stroke="var(--text-muted)"
-                            stroke-width="2.5" />
-                        <polygon points="32,46 44,18 54,18 42,46" fill="#1C202B" stroke="var(--text-muted)"
-                            stroke-width="2.5" />
-                        <g transform="translate(32, 32) skewX(-25) scale(2.15) translate(-12, -12)">
-                            <path
-                                d="M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z"
-                                fill="var(--accent)" stroke="var(--accent)" stroke-width="0.6" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </g>
-                    </g>
-                </svg>
-            </div>
-            <div class="pwa-install-text">
-                <div class="pwa-install-title" id="pwa-banner-title" data-i18n="pwaInstallTitle">Встановити ComicFlow
-                </div>
-                <div class="pwa-install-desc" data-i18n="pwaInstallDesc">Додайте додаток на екран для швидкого запуску
-                    та читання</div>
-            </div>
-            <div class="pwa-install-actions">
-                <button type="button" class="pwa-btn-dismiss" id="pwa-dismiss-btn"
-                    data-i18n="pwaDismiss">Пізніше</button>
-                <button type="button" class="pwa-btn-install" id="pwa-install-btn"
-                    data-i18n="pwaInstall">Встановити</button>
-            </div>
-        </div>
-        <div class="pwa-ios-instructions" id="pwa-ios-instructions">
-            <span data-i18n="pwaIosTip">Натисніть «Поділитися» та виберіть «На початковий екран»</span>
         </div>
     </div>
 </body>

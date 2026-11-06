@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const metaTheme = document.getElementById('meta-theme-color');
         if (metaTheme) {
-            metaTheme.setAttribute('content', accentHex);
+            metaTheme.setAttribute('content', '#0B0C10');
         }
     }
 
@@ -280,11 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chronoRotateLabel: 'Поворот (Rotate):',
             chronoSkewLabel: 'Нахил (Skew X):',
             chronoScaleLabel: 'Масштаб (Scale):',
-            pwaInstallTitle: 'Встановити ComicFlow',
-            pwaInstallDesc: 'Додайте додаток на екран для швидкого запуску та читання',
-            pwaInstall: 'Встановити',
-            pwaDismiss: 'Пізніше',
-            pwaIosTip: 'Натисніть «Поділитися» та виберіть «На початковий екран»',
             customColorPickerBtn: 'Власний колір (RGB / HEX)',
             colorBrightness: 'Яскравість',
             settingsLangHeading: 'Мова інтерфейсу та видань',
@@ -406,11 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chronoRotateLabel: 'Rotate:',
             chronoSkewLabel: 'Skew X:',
             chronoScaleLabel: 'Scale:',
-            pwaInstallTitle: 'Install ComicFlow',
-            pwaInstallDesc: 'Add app to your home screen for quick launch and reading',
-            pwaInstall: 'Install',
-            pwaDismiss: 'Later',
-            pwaIosTip: 'Tap "Share" and select "Add to Home Screen"',
             customColorPickerBtn: 'Custom color (RGB / HEX)',
             colorBrightness: 'Brightness',
             settingsLangHeading: 'Interface & Edition Language',
@@ -529,11 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chronoRotateLabel: 'Поворот (Rotate):',
             chronoSkewLabel: 'Наклон (Skew X):',
             chronoScaleLabel: 'Масштаб (Scale):',
-            pwaInstallTitle: 'Установить ComicFlow',
-            pwaInstallDesc: 'Добавьте приложение на экран для быстрого запуска и чтения',
-            pwaInstall: 'Установить',
-            pwaDismiss: 'Позже',
-            pwaIosTip: 'Нажмите «Поделиться» и выберите «На экран "Домой"»',
             customColorPickerBtn: 'Свой цвет (RGB / HEX)',
             colorBrightness: 'Яркость',
             settingsLangHeading: 'Язык интерфейса и изданий',
@@ -3625,67 +3610,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSettingsLabels();
     applyChronoBoltGeometry();
 
-    let deferredPwaPrompt = null;
-    const isStandaloneApp = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPwaPrompt = e;
-    });
-
-    function initPwaInstallPrompt() {
-        if (isStandaloneApp) return;
-        const banner = document.getElementById('pwa-install-banner');
-        const installBtn = document.getElementById('pwa-install-btn');
-        const dismissBtn = document.getElementById('pwa-dismiss-btn');
-        const closeBtn = document.getElementById('pwa-close-btn');
-        const iosTip = document.getElementById('pwa-ios-instructions');
-        if (!banner) return;
-
-        setTimeout(() => {
-            banner.classList.add('visible');
-        }, 1200);
-
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (deferredPwaPrompt) {
-                    deferredPwaPrompt.prompt();
-                    try {
-                        await deferredPwaPrompt.userChoice;
-                    } catch (_) { }
-                    deferredPwaPrompt = null;
-                    banner.classList.remove('visible');
-                } else {
-                    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-                    if (isIos && iosTip) {
-                        iosTip.classList.toggle('visible');
-                    } else {
-                        banner.classList.remove('visible');
-                    }
-                }
-            });
-        }
-
-        if (dismissBtn) {
-            dismissBtn.addEventListener('click', () => {
-                banner.classList.remove('visible');
-            });
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                banner.classList.remove('visible');
-            });
-        }
-    }
-
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').catch(() => { });
         });
     }
-
-    initPwaInstallPrompt();
 
     if (window.location.hash && window.location.hash !== '#home') {
         handleHashRoute();
@@ -3705,5 +3634,5 @@ document.addEventListener('DOMContentLoaded', () => {
         preloaderOverlay.addEventListener('click', hidePreloader);
     }
 
-    setTimeout(hidePreloader, 750);
+    setTimeout(hidePreloader, 1250);
 });
