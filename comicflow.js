@@ -106,17 +106,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let chronoRotate = 0;
     let chronoSkewX = -25;
-    let chronoScale = 2.15;
+    let chronoScale = 1.0;
     try {
         const savedRotate = localStorage.getItem('comic_chrono_rotate');
         const savedSkew = localStorage.getItem('comic_chrono_skew');
         const savedScale = localStorage.getItem('comic_chrono_scale');
         if (savedRotate !== null) chronoRotate = parseFloat(savedRotate);
         if (savedSkew !== null) chronoSkewX = parseFloat(savedSkew);
-        if (savedScale !== null) chronoScale = parseFloat(savedScale);
+        if (savedScale !== null) {
+            const parsed = parseFloat(savedScale);
+            chronoScale = (parsed > 1.4) ? 1.0 : parsed;
+        }
     } catch (_) { }
 
     function getChronoBoltTransformString(r = chronoRotate, s = chronoSkewX, sc = chronoScale) {
+        if (Math.abs(sc - 1.0) < 0.01) {
+            if (r === 0) {
+                return `translate(12, 12) skewX(${s}) translate(-12, -12)`;
+            }
+            return `translate(12, 12) rotate(${r}) skewX(${s}) translate(-12, -12)`;
+        }
         return `translate(12, 12) rotate(${r}) skewX(${s}) scale(${sc}) translate(-12, -12)`;
     }
 
@@ -2491,7 +2500,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chronoValEl = document.getElementById('settings-val-chrono-icon');
         if (chronoValEl) {
-            chronoValEl.textContent = `${chronoRotate}° / ${chronoSkewX}° (${chronoScale}x)`;
+            if (Math.abs(chronoScale - 1.0) < 0.01) {
+                chronoValEl.textContent = `${chronoRotate}° / ${chronoSkewX}°`;
+            } else {
+                chronoValEl.textContent = `${chronoRotate}° / ${chronoSkewX}° (${chronoScale}x)`;
+            }
         }
     }
 
@@ -2519,10 +2532,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (parallelBtn) {
-            parallelBtn.classList.toggle('active', r === 16 && s === -6 && Math.abs(sc - 2.15) < 0.01);
+            parallelBtn.classList.toggle('active', r === 16 && s === -6 && Math.abs(sc - 1.0) < 0.01);
         }
         if (uprightBtn) {
-            uprightBtn.classList.toggle('active', r === 0 && s === 0);
+            uprightBtn.classList.toggle('active', r === 0 && s === 0 && Math.abs(sc - 1.0) < 0.01);
         }
     }
 
@@ -2545,7 +2558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (chronoPresetParallel) {
         chronoPresetParallel.addEventListener('click', () => {
-            syncChronoDialogUI(16, -6, 2.15);
+            syncChronoDialogUI(16, -6, 1.0);
         });
     }
 

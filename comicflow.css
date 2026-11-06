@@ -4046,7 +4046,3 @@ body.nav-mode-bottom .pwa-install-banner {
     accent-color: var(--accent);
     cursor: pointer;
 }
-
-.nav-chrono-svg {
-    overflow: visible;
-}
