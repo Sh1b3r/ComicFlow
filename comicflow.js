@@ -1441,8 +1441,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="card-details">
                 <div class="card-row-meta">
-                    <span class="card-issue">${comic.issue}</span>
-                    <span class="card-year">${comic.year}</span>
+                    <span class="card-issue">${comic.issue} <span class="card-year">${comic.year}</span></span>
                 </div>
                 <div class="card-row-top">
                     <span class="card-title">${comic.title}</span>

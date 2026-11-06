@@ -1491,17 +1491,18 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
 .card-row-meta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     min-width: 0;
-    gap: 6px;
 }
 
 .card-issue {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     color: var(--accent);
     font-weight: 800;
     font-size: 0.7rem;
     background: rgba(var(--accent-rgb), 0.12);
-    padding: 1px 6px;
+    padding: 1px 7px;
     border-radius: 4px;
     border: 1px solid rgba(var(--accent-rgb), 0.35);
     flex-shrink: 0;
@@ -1510,9 +1511,14 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
 
 .card-year {
     color: var(--text-muted);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    flex-shrink: 0;
+}
+
+.card-year::before {
+    content: '•';
+    margin-right: 4px;
+    opacity: 0.5;
 }
 
 .card-row-top {
@@ -3859,10 +3865,11 @@ body.nav-mode-bottom .nav-btn:hover::before {
     .card-issue {
         font-size: 0.64rem;
         padding: 1px 5px;
+        gap: 3px;
     }
 
     .card-year {
-        font-size: 0.66rem;
+        font-size: 0.64rem;
     }
 
     .card-lang-pill {
