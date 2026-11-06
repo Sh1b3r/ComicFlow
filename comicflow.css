@@ -2085,7 +2085,7 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
 .title-breadcrumb-bar {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 16px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
@@ -3536,6 +3536,10 @@ body.nav-mode-bottom .nav-btn:hover::before {
         will-change: transform;
         touch-action: manipulation;
         box-sizing: border-box;
+    }
+
+    .title-breadcrumb-bar {
+        justify-content: space-around;
     }
 
     body:not(.nav-mode-side) .settings-modal {

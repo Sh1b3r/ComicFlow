@@ -857,12 +857,6 @@
                         </span>
                     </button>
 
-                    <button type="button" class="settings-row" data-dialog="dialog-chrono-icon">
-                        <span class="settings-row-label" data-i18n="settingsChronoIcon">Геометрія та нахил
-                            блискавки</span>
-                        <span class="settings-row-value" id="settings-val-chrono-icon">0° / -25° (2.15x)</span>
-                    </button>
-
                     <button type="button" class="settings-row" data-dialog="dialog-lang">
                         <span class="settings-row-label" data-i18n="settingsLangHeading">Мова інтерфейсу та
                             видань</span>
@@ -1027,71 +1021,7 @@
             </div>
         </div>
 
-        <div class="settings-subdialog-overlay" id="dialog-chrono-icon" role="dialog" aria-modal="true">
-            <div class="settings-subdialog settings-subdialog-wide">
-                <div class="logo-settings-header">
-                    <div>
-                        <h4 class="subdialog-title" data-i18n="chronoIconTitle">ГЕОМЕТРІЯ ТА НАХИЛ БЛИСКАВКИ</h4>
-                        <div class="subdialog-prompt" data-i18n="chronoIconDesc">Налаштуйте кут так, щоб блискавка
-                            ідеально лежала вздовж нахилених панелей коміксу</div>
-                    </div>
-                    <div class="logo-presets-row">
-                        <button type="button" id="chrono-preset-parallel-btn" class="logo-preset-btn"
-                            data-i18n="chronoPresetParallel">Фірмовий нахил (16° / -6°)</button>
-                        <button type="button" id="chrono-preset-upright-btn" class="logo-preset-btn"
-                            data-i18n="chronoPresetUpright">Рівно (0°)</button>
-                    </div>
-                </div>
 
-                <div class="logo-preview-box">
-                    <div class="chrono-preview-card">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="chrono-preview-svg">
-                            <g id="chrono-preview-bolt"
-                                transform="translate(12, 12) skewX(-25) translate(-12, -12)">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="logo-controls-grid">
-                    <div class="logo-control-cell">
-                        <div class="logo-control-head">
-                            <span class="logo-control-label" data-i18n="chronoRotateLabel">Поворот (Rotate):</span>
-                            <span class="logo-control-val" id="chrono-rotate-val">0°</span>
-                        </div>
-                        <input type="range" id="chrono-rotate-range" min="-30" max="35" step="1" value="0"
-                            class="logo-slider">
-                    </div>
-
-                    <div class="logo-control-cell">
-                        <div class="logo-control-head">
-                            <span class="logo-control-label" data-i18n="chronoSkewLabel">Нахил (Skew X):</span>
-                            <span class="logo-control-val" id="chrono-skew-val">-25°</span>
-                        </div>
-                        <input type="range" id="chrono-skew-range" min="-35" max="35" step="1" value="-25"
-                            class="logo-slider">
-                    </div>
-
-                    <div class="logo-control-cell">
-                        <div class="logo-control-head">
-                            <span class="logo-control-label" data-i18n="chronoScaleLabel">Масштаб (Scale):</span>
-                            <span class="logo-control-val" id="chrono-scale-val">1x</span>
-                        </div>
-                        <input type="range" id="chrono-scale-range" min="0.6" max="1.5" step="0.05" value="1"
-                            class="logo-slider">
-                    </div>
-                </div>
-
-                <div class="subdialog-actions">
-                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
-                        data-i18n="btnCancel">Скасувати</button>
-                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="chrono-icon"
-                        data-i18n="btnSave">Зберегти</button>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 

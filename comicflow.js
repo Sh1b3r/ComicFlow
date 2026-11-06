@@ -272,14 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsReaderScroll: 'Вертикальний скрол',
             settingsReaderScrollDesc: 'Плавний вертикальний потік читання сторінок',
             settingsTheme: 'Акцентна тема інтерфейсу',
-            settingsChronoIcon: 'Геометрія та нахил блискавки',
-            chronoIconTitle: 'Геометрія та нахил блискавки',
-            chronoIconDesc: 'Налаштуйте кут так, щоб блискавка ідеально лежала вздовж нахилених панелей коміксу',
-            chronoPresetParallel: 'Фірмовий нахил (16° / -6°)',
-            chronoPresetUpright: 'Рівно (0°)',
-            chronoRotateLabel: 'Поворот (Rotate):',
-            chronoSkewLabel: 'Нахил (Skew X):',
-            chronoScaleLabel: 'Масштаб (Scale):',
             customColorPickerBtn: 'Власний колір (RGB / HEX)',
             colorBrightness: 'Яскравість',
             settingsLangHeading: 'Мова інтерфейсу та видань',
@@ -393,14 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsReaderScroll: 'Vertical Scroll',
             settingsReaderScrollDesc: 'Smooth continuous vertical page flow',
             settingsTheme: 'Accent Theme Color',
-            settingsChronoIcon: 'Lightning bolt geometry & tilt',
-            chronoIconTitle: 'Lightning bolt geometry & tilt',
-            chronoIconDesc: 'Adjust angle and scale so the bolt aligns with slanted comic panels',
-            chronoPresetParallel: 'Signature tilt (16° / -6°)',
-            chronoPresetUpright: 'Upright (0°)',
-            chronoRotateLabel: 'Rotate:',
-            chronoSkewLabel: 'Skew X:',
-            chronoScaleLabel: 'Scale:',
             customColorPickerBtn: 'Custom color (RGB / HEX)',
             colorBrightness: 'Brightness',
             settingsLangHeading: 'Interface & Edition Language',
@@ -511,14 +495,6 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsReaderScroll: 'Вертикальный скролл',
             settingsReaderScrollDesc: 'Плавный вертикальный поток чтения страниц',
             settingsTheme: 'Акцентная тема интерфейса',
-            settingsChronoIcon: 'Геометрия и наклон молнии',
-            chronoIconTitle: 'Геометрия и наклон молнии',
-            chronoIconDesc: 'Настройте угол так, чтобы молния идеально ложилась вдоль наклонных панелей комикса',
-            chronoPresetParallel: 'Фирменный наклон (16° / -6°)',
-            chronoPresetUpright: 'Ровно (0°)',
-            chronoRotateLabel: 'Поворот (Rotate):',
-            chronoSkewLabel: 'Наклон (Skew X):',
-            chronoScaleLabel: 'Масштаб (Scale):',
             customColorPickerBtn: 'Свой цвет (RGB / HEX)',
             colorBrightness: 'Яркость',
             settingsLangHeading: 'Язык интерфейса и изданий',
@@ -2535,76 +2511,9 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (currentAppLanguage === 'en') langValEl.textContent = 'English';
             else if (currentAppLanguage === 'ru') langValEl.textContent = 'Русский';
         }
-
-        const chronoValEl = document.getElementById('settings-val-chrono-icon');
-        if (chronoValEl) {
-            if (Math.abs(chronoScale - 1.0) < 0.01) {
-                chronoValEl.textContent = `${chronoRotate}° / ${chronoSkewX}°`;
-            } else {
-                chronoValEl.textContent = `${chronoRotate}° / ${chronoSkewX}° (${chronoScale}x)`;
-            }
-        }
     }
 
     let subdialogSnapshot = {};
-
-    function syncChronoDialogUI(r, s, sc) {
-        const rotRange = document.getElementById('chrono-rotate-range');
-        const skewRange = document.getElementById('chrono-skew-range');
-        const scaleRange = document.getElementById('chrono-scale-range');
-        const rotVal = document.getElementById('chrono-rotate-val');
-        const skewVal = document.getElementById('chrono-skew-val');
-        const scaleVal = document.getElementById('chrono-scale-val');
-        const previewBolt = document.getElementById('chrono-preview-bolt');
-        const parallelBtn = document.getElementById('chrono-preset-parallel-btn');
-        const uprightBtn = document.getElementById('chrono-preset-upright-btn');
-
-        if (rotRange) rotRange.value = r;
-        if (skewRange) skewRange.value = s;
-        if (scaleRange) scaleRange.value = sc;
-        if (rotVal) rotVal.textContent = `${r}°`;
-        if (skewVal) skewVal.textContent = `${s}°`;
-        if (scaleVal) scaleVal.textContent = `${sc}x`;
-        if (previewBolt) {
-            previewBolt.setAttribute('transform', getChronoBoltTransformString(r, s, sc));
-        }
-
-        if (parallelBtn) {
-            parallelBtn.classList.toggle('active', r === 16 && s === -6 && Math.abs(sc - 1.0) < 0.01);
-        }
-        if (uprightBtn) {
-            uprightBtn.classList.toggle('active', r === 0 && s === 0 && Math.abs(sc - 1.0) < 0.01);
-        }
-    }
-
-    const chronoRotateRange = document.getElementById('chrono-rotate-range');
-    const chronoSkewRange = document.getElementById('chrono-skew-range');
-    const chronoScaleRange = document.getElementById('chrono-scale-range');
-    const chronoPresetParallel = document.getElementById('chrono-preset-parallel-btn');
-    const chronoPresetUpright = document.getElementById('chrono-preset-upright-btn');
-
-    function onChronoSliderChange() {
-        const r = parseFloat(chronoRotateRange ? chronoRotateRange.value : 0);
-        const s = parseFloat(chronoSkewRange ? chronoSkewRange.value : 0);
-        const sc = parseFloat(chronoScaleRange ? chronoScaleRange.value : 1);
-        syncChronoDialogUI(r, s, sc);
-    }
-
-    if (chronoRotateRange) chronoRotateRange.addEventListener('input', onChronoSliderChange);
-    if (chronoSkewRange) chronoSkewRange.addEventListener('input', onChronoSliderChange);
-    if (chronoScaleRange) chronoScaleRange.addEventListener('input', onChronoSliderChange);
-
-    if (chronoPresetParallel) {
-        chronoPresetParallel.addEventListener('click', () => {
-            syncChronoDialogUI(16, -6, 1.0);
-        });
-    }
-
-    if (chronoPresetUpright) {
-        chronoPresetUpright.addEventListener('click', () => {
-            syncChronoDialogUI(0, 0, 1.0);
-        });
-    }
 
     function openSubdialog(dialogId) {
         subdialogSnapshot = {
@@ -2613,10 +2522,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reader: currentReaderMode,
             lang: currentAppLanguage,
             color: currentAccentColor,
-            rgb: currentAccentRgb,
-            chronoRotate,
-            chronoSkewX,
-            chronoScale
+            rgb: currentAccentRgb
         };
         const dialog = document.getElementById(dialogId);
         if (dialog) {
@@ -2632,9 +2538,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     drawColorWheel(currentBright);
                     updateWheelHandlePosition();
                 }, 40);
-            }
-            if (dialogId === 'dialog-chrono-icon') {
-                syncChronoDialogUI(chronoRotate, chronoSkewX, chronoScale);
             }
         }
     }
@@ -2673,13 +2576,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (subdialogSnapshot.color && subdialogSnapshot.color !== currentAccentColor) {
                 applyTheme(subdialogSnapshot.color, subdialogSnapshot.rgb);
             }
-            if (subdialogSnapshot.chronoRotate !== undefined) {
-                chronoRotate = subdialogSnapshot.chronoRotate;
-                chronoSkewX = subdialogSnapshot.chronoSkewX;
-                chronoScale = subdialogSnapshot.chronoScale;
-                syncChronoDialogUI(chronoRotate, chronoSkewX, chronoScale);
-                applyChronoBoltGeometry(chronoRotate, chronoSkewX, chronoScale);
-            }
             updateSettingsLabels();
             closeSubdialogs();
         });
@@ -2700,22 +2596,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } catch (_) { }
                 applyNavPosition(activeNavRadio.value);
-            }
-            if (btn.dataset.saveDialog === 'chrono-icon') {
-                const rotRange = document.getElementById('chrono-rotate-range');
-                const skewRange = document.getElementById('chrono-skew-range');
-                const scaleRange = document.getElementById('chrono-scale-range');
-                if (rotRange && skewRange && scaleRange) {
-                    chronoRotate = parseFloat(rotRange.value);
-                    chronoSkewX = parseFloat(skewRange.value);
-                    chronoScale = parseFloat(scaleRange.value);
-                    try {
-                        localStorage.setItem('comic_chrono_rotate', chronoRotate);
-                        localStorage.setItem('comic_chrono_skew', chronoSkewX);
-                        localStorage.setItem('comic_chrono_scale', chronoScale);
-                    } catch (_) { }
-                    applyChronoBoltGeometry(chronoRotate, chronoSkewX, chronoScale);
-                }
             }
             updateSettingsLabels();
             closeSubdialogs();
@@ -2741,13 +2621,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (subdialogSnapshot.color && subdialogSnapshot.color !== currentAccentColor) {
                     applyTheme(subdialogSnapshot.color, subdialogSnapshot.rgb);
-                }
-                if (subdialogSnapshot.chronoRotate !== undefined) {
-                    chronoRotate = subdialogSnapshot.chronoRotate;
-                    chronoSkewX = subdialogSnapshot.chronoSkewX;
-                    chronoScale = subdialogSnapshot.chronoScale;
-                    syncChronoDialogUI(chronoRotate, chronoSkewX, chronoScale);
-                    applyChronoBoltGeometry(chronoRotate, chronoSkewX, chronoScale);
                 }
                 updateSettingsLabels();
                 closeSubdialogs();
