@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ComicFlow</title>
+    <meta name="theme-color" id="meta-theme-color" content="#E62429">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ComicFlow">
+    <meta name="application-name" content="ComicFlow">
+    <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link id="dynamic-apple-icon" rel="apple-touch-icon" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="comicflow.css">
+    <script src="comicflow.js" defer></script>
+</head>
+
+<body>
+    <div id="preloader-overlay" class="preloader-overlay">
+        <div class="logo-link anim-strike" id="preloader-logo" style="--logo-size: 88px;" title="ComicFlow">
+            <svg class="logo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="panel-left" pathLength="100" points="10,46 22,18 32,18 20,46" fill="#141720"
+                    stroke="var(--text-muted)" stroke-width="2.5"></polygon>
+                <polygon class="panel-right" pathLength="100" points="32,46 44,18 54,18 42,46" fill="#141720"
+                    stroke="var(--text-muted)" stroke-width="2.5"></polygon>
+                <g class="bolt-anim">
+                    <g class="bolt-pos" transform="translate(32, 32) skewX(-25) scale(2.15) translate(-12, -12)">
+                        <path class="bolt-path" pathLength="100"
+                            d="M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="preloader-meta">
+            <div class="preloader-text">
+                Завантаження <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>
+            </div>
+            <div class="loader-bar-track">
+                <div class="loader-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <aside class="sidebar" aria-label="Навігація">
+            <div class="logo-link anim-strike" id="logo-button" title="ComicFlow">
+                <svg class="logo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon class="panel-left" pathLength="100" points="10,46 22,18 32,18 20,46" fill="#141720"
+                        stroke="var(--text-muted)" stroke-width="2.5"></polygon>
+                    <polygon class="panel-right" pathLength="100" points="32,46 44,18 54,18 42,46" fill="#141720"
+                        stroke="var(--text-muted)" stroke-width="2.5"></polygon>
+                    <g class="bolt-anim">
+                        <g class="bolt-pos" transform="translate(32, 32) skewX(-25) scale(2.15) translate(-12, -12)">
+                            <path class="bolt-path" pathLength="100"
+                                d="M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-view="home" data-i18n-title="navHome" title="Головна"><svg
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z M9.5 21v-6a0.5.5 0 0 1 .5-.5h4a0.5.5 0 0 1 .5.5v6z">
+                        </path>
+                    </svg></button>
+                <button class="nav-btn" data-view="search" id="nav-search-btn" data-i18n-title="navSearch"
+                    title="Пошук"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="21" y1="21" x2="16" y2="16"></line>
+                    </svg></button>
+                <button class="nav-btn" data-view="chronology" data-i18n-title="navChronology" title="Хронології"><svg
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="nav-chrono-svg">
+                            <g class="chrono-nav-bolt"
+                                transform="translate(12, 12) rotate(0) skewX(-25) scale(2.15) translate(-12, -12)">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </g>
+                    </svg></button>
+                <button class="nav-btn" data-view="bookmarks" data-i18n-title="navBookmarks" title="Закладки"><svg
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                        </polygon>
+                    </svg></button>
+                <button class="nav-btn" data-view="settings" data-action="settings" data-i18n-title="navSettings"
+                    title="Налаштування"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1zM12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z">
+                        </path>
+                    </svg></button>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <header class="header">
+                <div class="header-top">
+                    <div class="brand-box" id="brand-button">
+                        <div class="brand-title">COMIC <span>FLOW</span></div>
+                    </div>
+
+                    <form class="search-form" id="search-form">
+                        <label for="search-input">
+                            <input required="" autocomplete="off" placeholder="Пошук..." id="search-input" type="text">
+                            <div class="search-icon" role="button" aria-label="Пошук">
+                                <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg" class="swap-on">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linejoin="round"
+                                        stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                            <button type="reset" class="search-close-btn" id="search-clear-btn"
+                                aria-label="Очистити пошук">
+                                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path clip-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        fill-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </label>
+                    </form>
+                    <div class="lang-switch-box">
+                        <button class="lang-btn" id="lang-menu-btn" aria-label="Зміна мови" title="Мова / Language">
+                            <span class="lang-globe">🌐</span>
+                            <span class="lang-curr-label" id="lang-curr-label">UA</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tags-bar" id="tags-bar" role="tablist"></div>
+            </header>
+
+            <div class="views-container">
+                <section class="app-view active" id="view-home">
+                    <section class="hero">
+                        <div class="hero-content">
+                            <span class="badge">Культова подія • Earth-616</span>
+                            <h1 class="hero-title">SECRET WARS</h1>
+                            <p class="hero-desc">
+                                Зіткнення мультивсесвітів знищило залишки реальності. Залишився лише Світ Битв — планета
+                                під абсолютною владою Доктора Дума. Пориньте у культову сагу Джонатана Гікмана та
+                                дізнайтеся, як герої борються за відновлення всесвіту.
+                            </p>
+                            <button class="hero-read-btn js-open-title" data-comic-id="secret-wars">
+                                ▶ До випусків та опису
+                            </button>
+                        </div>
+
+                        <div class="hero-art">
+                            <div class="hero-poster">
+                                <div class="poster-header">
+                                    <span>#001</span>
+                                    <span>MARVEL</span>
+                                </div>
+                                <div class="poster-logo">SECRET WARS</div>
+                                <div class="poster-footer">
+                                    <span>Hickman • Ribić</span>
+                                    <span>2015</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <main class="catalog">
+                        <div class="catalog-header">
+                            <h2 data-i18n="catalogTitle">Каталог випусків</h2>
+                            <span class="results-counter" id="results-counter"></span>
+                        </div>
+
+                        <div class="catalog-grid" id="catalog-grid">
+                            <article class="comic-card" data-comic-id="secret-wars"
+                                data-tags="616 events cosmic secret wars hickman">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 40% 30%, #5a121b 0%, #171822 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">RATED T+</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">SECRET WARS</div>
+                                            <div class="cover-subtitle">FINAL INVASION</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>HICKMAN</span>
+                                            <span>RIBIĆ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#009</span>
+                                        <span class="card-title">Secret Wars</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2015</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="secret-wars">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Джонатан Гікман</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="house-of-x"
+                                data-tags="x-men house of x hickman mutants 616 krakoa">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 45% 35%, #184428 0%, #101918 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">DAWN OF X</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">HOUSE OF X</div>
+                                            <div class="cover-subtitle">THE NEW MUTANT AGE</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>HICKMAN</span>
+                                            <span>LARRAZ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#001</span>
+                                        <span class="card-title">House of X</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2019</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="house-of-x">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Джонатан Гікман</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="spider-man"
+                                data-tags="spider-man ultimate 1610 ongoing hickman peter parker">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 60% 40%, #19386c 0%, #131724 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">ULTIMATE</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">SPIDER-MAN</div>
+                                            <div class="cover-subtitle">THE NEW ULTIMATE</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>HICKMAN</span>
+                                            <span>CHESTETTO</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#001</span>
+                                        <span class="card-title">Ultimate Spider-Man</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2024</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="spider-man">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Джонатан Гікман</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="ultron"
+                                data-tags="ultron avengers 616 events bendis age of ultron">
+                                <div class="card-cover-wrap">
+                                    <img src="images/ultron/cover.jpg" alt="Age of Ultron" class="cover-image-pic">
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#001</span>
+                                        <span class="card-title">Age of Ultron</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2013</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="ultron">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Браян Майкл Бендіс</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="iron-man"
+                                data-tags="iron man 616 extremis ellis tony stark">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 30% 60%, #52300b 0%, #1d1413 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">INVINCIBLE</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">IRON MAN</div>
+                                            <div class="cover-subtitle">EXTREMIS PROTOCOL</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>ELLIS</span>
+                                            <span>GRANOV</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#005</span>
+                                        <span class="card-title">Iron Man: Extremis</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2005</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="iron-man">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Воррен Елліс</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="black-panther"
+                                data-tags="black panther wakanda 616 ongoing coates t'challa">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 70% 30%, #291e52 0%, #121322 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">WAKANDA</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">BLACK PANTHER</div>
+                                            <div class="cover-subtitle">A NATION UNDER FEET</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>COATES</span>
+                                            <span>STELFREEZE</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#001</span>
+                                        <span class="card-title">Black Panther: Nation</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2016</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="black-panther">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Та-Нехісі Коутс</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="annihilation"
+                                data-tags="cosmic 616 annihilation giffen nova galactus">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 40% 70%, #114249 0%, #0d171c 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">COSMIC EVENT</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">ANNIHILATION</div>
+                                            <div class="cover-subtitle">NEGATIVE ZONE WAR</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>GIFFEN</span>
+                                            <span>DI VITO</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#001</span>
+                                        <span class="card-title">Annihilation</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2006</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="annihilation">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Кіт Гіффен</span>
+                                </div>
+                            </article>
+                            <article class="comic-card" data-comic-id="avengers"
+                                data-tags="avengers 616 events bendis disassembled scarlet witch">
+                                <div class="card-cover-wrap">
+                                    <div class="card-cover-art"
+                                        style="background: radial-gradient(circle at 50% 30%, #4f1122 0%, #17121b 80%);">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher">MARVEL</span>
+                                            <span class="cover-code">DISASSEMBLED</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo">AVENGERS</div>
+                                            <div class="cover-subtitle">CHAOS MAGIC FALL</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span>BENDIS</span>
+                                            <span>FINCH</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-details">
+                                    <div class="card-row-top">
+                                        <span class="card-issue">#500</span>
+                                        <span class="card-title">Avengers: Disassembled</span>
+                                    </div>
+                                    <div class="card-row-bottom">
+                                        <span class="card-year">2004</span>
+                                        <button class="card-read-btn js-open-title" data-comic-id="avengers">Читати
+                                            випуск</button>
+                                    </div>
+                                    <span class="card-author" style="display: none;">Браян Майкл Бендіс</span>
+                                </div>
+                            </article>
+                            <div class="empty-state" id="empty-state" style="display: none;">
+                                <div class="empty-icon">⌕</div>
+                                <div class="empty-title" data-i18n="emptyTitle">Нічого не знайдено</div>
+                                <div class="empty-desc" data-i18n="emptyDesc">За вашим запитом не знайдено жодного
+                                    випуску. Спробуйте змінити ключове слово або скористайтеся підказками вгорі.</div>
+                                <button class="reset-search-btn" id="reset-search-btn" data-i18n="emptyBtn">Показати всі
+                                    випуски</button>
+                            </div>
+                        </div>
+                    </main>
+                </section>
+
+                <section class="app-view" id="view-search">
+                    <div class="panel-page">
+
+                        <div class="search-top-bar-row">
+                            <button class="back-to-catalog-btn mobile-search-back-btn"
+                                title="Назад до каталогу">←</button>
+                            <form class="search-form search-panel-form" id="search-panel-form">
+                                <label for="search-panel-input">
+                                    <input required="" autocomplete="off" placeholder="Пошук..." id="search-panel-input"
+                                        type="text">
+                                    <div class="search-icon" role="button" aria-label="Пошук">
+                                        <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" class="swap-on">
+                                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                                stroke-linejoin="round" stroke-linecap="round"></path>
+                                        </svg>
+                                    </div>
+                                    <button type="reset" class="search-close-btn" id="search-panel-clear"
+                                        aria-label="Очистити пошук">
+                                        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                fill-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                </label>
+                            </form>
+                        </div>
+
+                        <div class="search-section" id="search-history-section">
+                            <div class="search-section-header">
+                                <span class="search-section-title" data-i18n="searchRecent">⏱ Останні пошуки</span>
+                                <button type="button" class="search-clear-history-btn" id="clear-all-history"
+                                    data-i18n="searchClearAll">Очистити
+                                    все</button>
+                            </div>
+                            <div class="history-tags-list" id="history-tags-list"></div>
+                        </div>
+
+                        <div class="search-section">
+                            <div class="search-section-header">
+                                <span class="search-section-title" data-i18n="searchTrending">🔥 Популярне зараз у
+                                    тренді</span>
+                            </div>
+                            <div class="trending-grid" id="trending-grid">
+                                <div class="trending-item" data-query="Secret Wars">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">1</span>
+                                        <span class="trending-query">Secret Wars</span>
+                                    </div>
+                                    <span class="trending-badge" data-i18n="trendingMultiverse">Мультивсесвіт</span>
+                                </div>
+                                <div class="trending-item" data-query="Spider-Man">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">2</span>
+                                        <span class="trending-query">Spider-Man</span>
+                                    </div>
+                                    <span class="trending-badge">Ultimate 1610</span>
+                                </div>
+                                <div class="trending-item" data-query="House of X">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">3</span>
+                                        <span class="trending-query">House of X</span>
+                                    </div>
+                                    <span class="trending-badge" data-i18n="trendingKrakoa">Кракоа</span>
+                                </div>
+                                <div class="trending-item" data-query="Ultron">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">4</span>
+                                        <span class="trending-query">Age of Ultron</span>
+                                    </div>
+                                    <span class="trending-badge" data-i18n="trendingCrossover">Кросовер</span>
+                                </div>
+                                <div class="trending-item" data-query="Annihilation">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">5</span>
+                                        <span class="trending-query">Annihilation</span>
+                                    </div>
+                                    <span class="trending-badge" data-i18n="trendingCosmos">Космос</span>
+                                </div>
+                                <div class="trending-item" data-query="Iron Man">
+                                    <div class="trending-left">
+                                        <span class="trending-rank">6</span>
+                                        <span class="trending-query">Iron Man: Extremis</span>
+                                    </div>
+                                    <span class="trending-badge" data-i18n="trendingClassic">Класика</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="search-section">
+                            <div class="search-section-header">
+                                <span class="search-section-title" data-i18n="searchQuickFilters">⚡ Швидкі
+                                    фільтри</span>
+                            </div>
+                            <div class="filter-categories-grid">
+                                <div class="filter-category-card">
+                                    <span class="filter-category-name" data-i18n="filterUniverses">Всесвіти</span>
+                                    <div class="filter-category-chips">
+                                        <button class="quick-filter-chip" data-query="616">Earth-616</button>
+                                        <button class="quick-filter-chip" data-query="1610">Ultimate 1610</button>
+                                        <button class="quick-filter-chip" data-query="cosmic"
+                                            data-i18n="filterCosmic">Космічні саги</button>
+                                    </div>
+                                </div>
+                                <div class="filter-category-card">
+                                    <span class="filter-category-name" data-i18n="filterAuthors">Автори</span>
+                                    <div class="filter-category-chips">
+                                        <button class="quick-filter-chip" data-query="Гікман">Джонатан Гікман</button>
+                                        <button class="quick-filter-chip" data-query="Бендіс">Браян Бендіс</button>
+                                        <button class="quick-filter-chip" data-query="Елліс">Воррен Елліс</button>
+                                    </div>
+                                </div>
+                                <div class="filter-category-card">
+                                    <span class="filter-category-name" data-i18n="filterTeams">Команди та події</span>
+                                    <div class="filter-category-chips">
+                                        <button class="quick-filter-chip" data-query="Avengers"
+                                            data-i18n="filterAvengers">Месники</button>
+                                        <button class="quick-filter-chip" data-query="X-Men" data-i18n="filterXMen">Люди
+                                            Ікс</button>
+                                        <button class="quick-filter-chip" data-query="events"
+                                            data-i18n="filterEvents">Глобальні події</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="app-view" id="view-chronology">
+                    <div class="panel-page">
+                        <div class="panel-header-bar">
+                            <div class="panel-heading-wrap">
+                                <button class="back-to-catalog-btn" data-i18n-title="backToCatalog"
+                                    title="Назад до каталогу">←</button>
+                                <div>
+                                    <h2 class="panel-title" data-i18n="timelineTitle">Хронології та порядок читання</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-tabs">
+                            <button class="event-tab-btn active" data-event="secret-wars">Secret Wars (2015)</button>
+                            <button class="event-tab-btn" data-event="age-of-ultron">Age of Ultron (2013)</button>
+                            <button class="event-tab-btn" data-event="annihilation">Annihilation (2006)</button>
+                        </div>
+
+                        <div class="timeline-flow" id="timeline-flow">
+                            <div class="timeline-item">
+                                <div class="timeline-thumb">NEW AVENGERS #1</div>
+                                <div class="timeline-content">
+                                    <span class="timeline-step-badge">Крок 01</span>
+                                    <span class="timeline-phase">Пролог • Зіткнення світів</span>
+                                    <h3 class="timeline-title">New Avengers: Everything Dies</h3>
+                                    <p class="timeline-desc">Таємна рада Ілюмінатів виявляє, що паралельні світи
+                                        стикаються один з одним, знищуючи цілі всесвіти. Початок падіння Мультивсесвіту.
+                                    </p>
+                                    <button class="timeline-read-btn js-open-title" data-comic-id="avengers">Читати
+                                        пролог</button>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-thumb">SECRET WARS #1</div>
+                                <div class="timeline-content">
+                                    <span class="timeline-step-badge">Крок 02</span>
+                                    <span class="timeline-phase">Основна подія • Катастрофа</span>
+                                    <h3 class="timeline-title">Secret Wars: The End Times</h3>
+                                    <p class="timeline-desc">Останнє зіткнення між Earth-616 та Ultimate 1610. Герої
+                                        обох світів відчайдушно намагаються вижити в рятувальних шаттлах.</p>
+                                    <button class="timeline-read-btn js-open-title" data-comic-id="secret-wars">Читати
+                                        випуск #1</button>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-thumb">THORS #1</div>
+                                <div class="timeline-content">
+                                    <span class="timeline-step-badge">Крок 03</span>
+                                    <span class="timeline-phase">Ключовий тай-ін • Поліція Батлворлду</span>
+                                    <h3 class="timeline-title">Thors: Battleworld Law</h3>
+                                    <p class="timeline-desc">Корпус Торів розслідує таємничі вбивства на території Світу
+                                        Битв, які можуть похитнути владу самого Доктора Дума.</p>
+                                    <button class="timeline-read-btn js-open-title" data-comic-id="secret-wars">Читати
+                                        тай-ін</button>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-thumb">SECRET WARS #9</div>
+                                <div class="timeline-content">
+                                    <span class="timeline-step-badge">Крок 04</span>
+                                    <span class="timeline-phase">Кульмінація • Переродження</span>
+                                    <h3 class="timeline-title">Secret Wars: Beyond</h3>
+                                    <p class="timeline-desc">Фінальна битва Ріда Річардса та Доктора Дума за право
+                                        відновити Всесвіт. Народження нової ери коміксів Marvel.</p>
+                                    <button class="timeline-read-btn js-open-title" data-comic-id="secret-wars">Читати
+                                        фінал</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="app-view" id="view-bookmarks">
+                    <div class="panel-page">
+                        <div class="panel-header-bar">
+                            <div class="panel-heading-wrap">
+                                <button class="back-to-catalog-btn" data-i18n-title="backToCatalog"
+                                    title="Назад до каталогу">←</button>
+                                <div>
+                                    <h2 class="panel-title" data-i18n="bookmarksTitle">Моя бібліотека та закладки</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="search-section">
+                            <span class="search-section-title" data-i18n="secContinueReading">📖 Продовжити
+                                читання</span>
+                            <div class="continue-grid" id="continue-reading-grid"></div>
+                        </div>
+
+                        <div class="search-section">
+                            <span class="search-section-title" data-i18n="secSavedComics">★ Збережені комікси на
+                                потім</span>
+                            <div class="catalog-grid" id="saved-comics-grid"
+                                style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));"></div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <section class="app-view" id="view-title">
+                    <div class="title-page">
+                        <div class="title-breadcrumb-bar">
+                            <button class="reader-back-to-title-btn" id="title-quick-back" data-i18n="backToCatalog">←
+                                Назад до каталогу</button>
+                            <div class="title-breadcrumbs">
+                                <a class="breadcrumb-home" id="title-back-catalog" data-i18n="navHome">Каталог</a>
+                                <span>›</span>
+                                <span id="title-breadcrumb-name">Secret Wars</span>
+                            </div>
+
+                        </div>
+
+                        <div class="title-hero-card">
+                            <div class="title-header-group">
+                                <h1 class="title-main-heading" id="title-main-heading">Secret Wars (2015)</h1>
+                                <div class="title-orig-heading" id="title-orig-heading">Marvel Comics • Оригінал:
+                                    Secret Wars #1-9</div>
+                                <div class="title-rating-pill" id="title-rating-pill">★ 9.8 / 10</div>
+                            </div>
+                            <div class="title-cover-column">
+                                <div class="title-cover-frame" id="title-cover-frame">
+                                    <span class="card-lang-pill">RU</span>
+                                    <div class="title-cover-art" id="title-cover-art">
+                                        <div class="cover-top-strip">
+                                            <span class="cover-publisher" id="title-cover-publisher">MARVEL</span>
+                                            <span class="cover-code" id="title-cover-code">RATED T+</span>
+                                        </div>
+                                        <div class="cover-artwork">
+                                            <div class="cover-logo" id="title-cover-logo">SECRET WARS</div>
+                                            <div class="cover-subtitle" id="title-cover-sub">FINAL INVASION</div>
+                                        </div>
+                                        <div class="cover-bottom-strip">
+                                            <span id="title-cover-author">HICKMAN</span>
+                                            <span id="title-cover-artist">RIBIĆ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="title-details-column">
+                                <div class="title-actions-row">
+                                    <button class="title-start-reading-btn" id="title-start-reading-btn"
+                                        data-i18n="startReading">
+                                        ▶ Почати читати #1
+                                    </button>
+                                    <button class="title-bookmark-btn" id="title-bookmark-btn" data-i18n="addBookmark">
+                                        ★ Додати до закладок
+                                    </button>
+                                </div>
+
+                                <div class="title-meta-table">
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaYear">Рік випуску</span>
+                                        <span class="title-meta-value" id="title-meta-year">2015</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaPublisher">Видавець</span>
+                                        <span class="title-meta-value" id="title-meta-publisher">Marvel Comics</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaAuthor">Сценарист</span>
+                                        <span class="title-meta-value" id="title-meta-author">Джонатан Гікман</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaArtist">Художник</span>
+                                        <span class="title-meta-value" id="title-meta-artist">Есад Рибич</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaStatus">Статус</span>
+                                        <span class="title-meta-value" id="title-meta-status">Завершено</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaChapters">Розділів /
+                                            Випусків</span>
+                                        <span class="title-meta-value" id="title-meta-chapters">9 випусків</span>
+                                    </div>
+                                    <div class="title-meta-item">
+                                        <span class="title-meta-label" data-i18n="metaScanLang">Мова видання</span>
+                                        <span class="title-meta-value" id="title-meta-scanlang">Оригінал (RU)</span>
+                                    </div>
+                                </div>
+
+                                <div class="title-genres-list" id="title-genres-list">
+                                    <span class="title-genre-badge">Кросовер</span>
+                                    <span class="title-genre-badge">Космічні події</span>
+                                    <span class="title-genre-badge">Мультивсесвіт</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section class="title-synopsis-section">
+                            <h3 class="title-synopsis-heading" data-i18n="synopsisHeading">Опис та синопсис</h3>
+                            <p class="title-synopsis-text" id="title-synopsis-text">
+                                Зіткнення мультивсесвітів знищило залишки реальності...
+                            </p>
+                        </section>
+
+                        <section class="chapters-section">
+                            <div class="chapters-header-bar">
+                                <h3 class="chapters-title" data-i18n="chaptersHeading">Список випусків та розділів</h3>
+                                <span class="chapters-count-pill" id="chapters-count-pill">9 випусків</span>
+                            </div>
+                            <div class="chapters-list" id="chapters-list">
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <section class="app-view" id="view-reader">
+                    <div class="reader-page">
+                        <header class="reader-navbar">
+                            <div class="reader-navbar-left">
+                                <button class="reader-back-to-title-btn" id="reader-back-to-title">
+                                    <span class="back-btn-arrow">←</span>
+                                    <span class="back-btn-label" data-i18n="readerBack">До опису</span>
+                                </button>
+                                <div class="reader-current-comic-info">
+                                    <span class="reader-current-comic-title" id="reader-comic-title-nav">Secret
+                                        Wars</span>
+                                    <span class="reader-current-chapter-title" id="reader-chapter-title-nav">Випуск #1:
+                                        The End Times</span>
+                                </div>
+                            </div>
+                            <div class="reader-navbar-right">
+                                <span class="reader-scan-lang-badge" id="reader-scan-lang-badge">RU скан</span>
+                                <select class="reader-chapter-select" id="reader-chapter-select"
+                                    aria-label="Вибір розділу">
+                                </select>
+                                <span class="reader-progress-indicator" id="reader-progress-indicator">Сторінка 1 з
+                                    5</span>
+                            </div>
+                            <div class="reader-scroll-progress-line">
+                                <div class="reader-scroll-progress-bar" id="reader-scroll-progress-bar"></div>
+                            </div>
+                        </header>
+
+                        <main class="reader-strip-container" id="reader-strip">
+                        </main>
+                        <nav class="reader-page-nav-bar" id="reader-page-nav-bar" aria-label="Навігація сторінками">
+                            <button class="reader-page-btn" id="reader-page-prev-btn">
+                                <span class="reader-page-btn-icon">←</span>
+                                <span data-i18n="readerPrevPage">Попередня</span>
+                            </button>
+                            <button class="reader-page-btn" id="reader-page-next-btn">
+                                <span data-i18n="readerNextPage">Наступна</span>
+                                <span class="reader-page-btn-icon">→</span>
+                            </button>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="settings-modal" id="settings-modal" role="dialog" aria-modal="true">
+        <div class="settings-dialog">
+            <div class="settings-header">
+                <h3 class="settings-title" data-i18n="settingsTitle">Налаштування</h3>
+                <button type="button" class="settings-close-btn" id="settings-close" aria-label="Закрити">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-list">
+                    <button type="button" class="settings-row" data-dialog="dialog-nav">
+                        <span class="settings-row-label" data-i18n="settingsNav">Розташування меню навігації</span>
+                        <span class="settings-row-value" id="settings-val-nav">Збоку</span>
+                    </button>
+
+                    <button type="button" class="settings-row" data-dialog="dialog-reader">
+                        <span class="settings-row-label" data-i18n="settingsReader">Режим гортання в читалці</span>
+                        <span class="settings-row-value" id="settings-val-reader">Вертикальний скрол</span>
+                    </button>
+
+                    <button type="button" class="settings-row" data-dialog="dialog-theme">
+                        <span class="settings-row-label" data-i18n="settingsTheme">Акцентна тема інтерфейсу</span>
+                        <span class="settings-row-value settings-row-theme-val" id="settings-val-theme">
+                            <span class="theme-val-dot" id="settings-theme-dot"></span>
+                            <span id="settings-val-theme-name">#E62429</span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="settings-row" data-dialog="dialog-chrono-icon">
+                        <span class="settings-row-label" data-i18n="settingsChronoIcon">Геометрія та нахил
+                            блискавки</span>
+                        <span class="settings-row-value" id="settings-val-chrono-icon">0° / -25° (2.15x)</span>
+                    </button>
+
+                    <button type="button" class="settings-row" data-dialog="dialog-lang">
+                        <span class="settings-row-label" data-i18n="settingsLangHeading">Мова інтерфейсу та
+                            видань</span>
+                        <span class="settings-row-value" id="settings-val-lang">Українська</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-nav" role="dialog" aria-modal="true">
+            <div class="settings-subdialog">
+                <h4 class="subdialog-title" data-i18n="settingsNav">Розташування меню навігації</h4>
+                <div class="subdialog-prompt" data-i18n="settingsNavPrompt">Оберіть де відображати панель навігації
+                </div>
+                <div class="subdialog-options">
+                    <label class="subdialog-option">
+                        <input type="radio" name="nav-position" value="bottom">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsNavBottom">Знизу</span>
+                        </div>
+                    </label>
+                    <label class="subdialog-option">
+                        <input type="radio" name="nav-position" value="side">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsNavSide">Збоку</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
+                        data-i18n="btnCancel">Скасувати</button>
+                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="nav"
+                        data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-reader" role="dialog" aria-modal="true">
+            <div class="settings-subdialog">
+                <h4 class="subdialog-title" data-i18n="settingsReader">Режим гортання в читалці</h4>
+                <div class="subdialog-prompt" data-i18n="settingsReaderPrompt">Оберіть спосіб перегляду сторінок</div>
+                <div class="subdialog-options">
+                    <label class="subdialog-option">
+                        <input type="radio" name="reader-mode" value="page">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsReaderPage">Посторінкове гортання</span>
+                        </div>
+                    </label>
+                    <label class="subdialog-option">
+                        <input type="radio" name="reader-mode" value="scroll" checked>
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsReaderScroll">Вертикальний скрол</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
+                        data-i18n="btnCancel">Скасувати</button>
+                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="reader"
+                        data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-theme" role="dialog" aria-modal="true">
+            <div class="settings-subdialog">
+                <h4 class="subdialog-title" data-i18n="settingsTheme">Акцентна тема інтерфейсу</h4>
+                <div class="subdialog-prompt" data-i18n="settingsThemePrompt">Оберіть кольорову гаму оформлення</div>
+                <div class="theme-swatches" id="theme-swatches">
+                    <button type="button" class="theme-swatch active" data-color="#E62429" data-rgb="230, 36, 41"
+                        style="background:#E62429;" title="Crimson Marvel"></button>
+                    <button type="button" class="theme-swatch" data-color="#1E88E5" data-rgb="30, 136, 229"
+                        style="background:#1E88E5;" title="Spider Blue"></button>
+                    <button type="button" class="theme-swatch" data-color="#8E24AA" data-rgb="142, 36, 170"
+                        style="background:#8E24AA;" title="Cyber Violet"></button>
+                    <button type="button" class="theme-swatch" data-color="#2E7D32" data-rgb="46, 125, 50"
+                        style="background:#2E7D32;" title="Krakoa Emerald"></button>
+                    <button type="button" class="theme-swatch" data-color="#F57C00" data-rgb="245, 124, 0"
+                        style="background:#F57C00;" title="Stark Gold"></button>
+                </div>
+
+                <button type="button" class="color-picker-toggle-btn" id="color-picker-toggle-btn">
+                    <span class="color-wheel-mini-icon"></span>
+                    <span data-i18n="customColorPickerBtn">Власний колір (RGB / HEX)</span>
+                    <span class="color-picker-chevron">▼</span>
+                </button>
+
+                <div class="color-picker-panel" id="color-picker-panel">
+                    <div class="color-wheel-wrapper">
+                        <canvas id="color-wheel-canvas" class="color-wheel-canvas" width="170" height="170"></canvas>
+                        <div class="color-wheel-handle" id="color-wheel-handle"></div>
+                    </div>
+                    <div class="color-picker-controls">
+                        <div class="color-preview-row">
+                            <div class="color-current-preview" id="color-current-preview" title="Поточний колір"></div>
+                            <input type="color" id="native-color-picker"
+                                style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" tabindex="-1"
+                                aria-hidden="true">
+                            <div class="hex-input-wrap">
+                                <span class="hex-prefix">#</span>
+                                <input type="text" id="color-hex-input" class="color-hex-input" placeholder="E62429"
+                                    spellcheck="false" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="color-slider-row">
+                            <div class="color-slider-header">
+                                <span class="color-slider-label" data-i18n="colorBrightness">Яскравість</span>
+                                <span class="color-slider-value" id="color-brightness-val">90%</span>
+                            </div>
+                            <input type="range" id="color-brightness-slider" class="color-brightness-slider" min="15"
+                                max="100" value="90">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
+                        data-i18n="btnCancel">Скасувати</button>
+                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="theme"
+                        data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-lang" role="dialog" aria-modal="true">
+            <div class="settings-subdialog">
+                <h4 class="subdialog-title" data-i18n="settingsLangHeading">Мова інтерфейсу та видань</h4>
+                <div class="subdialog-prompt" data-i18n="settingsLangPrompt">Оберіть мову інтерфейсу та адаптації</div>
+                <div class="subdialog-options">
+                    <label class="subdialog-option">
+                        <input type="radio" name="app-language" value="ua">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsLangUa">Українська</span>
+                        </div>
+                    </label>
+                    <label class="subdialog-option">
+                        <input type="radio" name="app-language" value="en">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsLangEn">English</span>
+                        </div>
+                    </label>
+                    <label class="subdialog-option">
+                        <input type="radio" name="app-language" value="ru">
+                        <span class="subdialog-radio-mark"></span>
+                        <div class="subdialog-option-text">
+                            <span class="option-title" data-i18n="settingsLangRu">Русский</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
+                        data-i18n="btnCancel">Скасувати</button>
+                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="lang"
+                        data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-chrono-icon" role="dialog" aria-modal="true">
+            <div class="settings-subdialog settings-subdialog-wide">
+                <div class="logo-settings-header">
+                    <div>
+                        <h4 class="subdialog-title" data-i18n="chronoIconTitle">ГЕОМЕТРІЯ ТА НАХИЛ БЛИСКАВКИ</h4>
+                        <div class="subdialog-prompt" data-i18n="chronoIconDesc">Налаштуйте кут так, щоб блискавка
+                            ідеально лежала вздовж нахилених панелей коміксу</div>
+                    </div>
+                    <div class="logo-presets-row">
+                        <button type="button" id="chrono-preset-parallel-btn" class="logo-preset-btn"
+                            data-i18n="chronoPresetParallel">Фірмовий нахил (16° / -6°)</button>
+                        <button type="button" id="chrono-preset-upright-btn" class="logo-preset-btn"
+                            data-i18n="chronoPresetUpright">Рівно (0°)</button>
+                    </div>
+                </div>
+
+                <div class="logo-preview-box">
+                    <div class="chrono-preview-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="chrono-preview-svg">
+                            <g id="chrono-preview-bolt"
+                                transform="translate(12, 12) rotate(0) skewX(-25) scale(2.15) translate(-12, -12)">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="logo-controls-grid">
+                    <div class="logo-control-cell">
+                        <div class="logo-control-head">
+                            <span class="logo-control-label" data-i18n="chronoRotateLabel">Поворот (Rotate):</span>
+                            <span class="logo-control-val" id="chrono-rotate-val">0°</span>
+                        </div>
+                        <input type="range" id="chrono-rotate-range" min="-30" max="35" step="1" value="0"
+                            class="logo-slider">
+                    </div>
+
+                    <div class="logo-control-cell">
+                        <div class="logo-control-head">
+                            <span class="logo-control-label" data-i18n="chronoSkewLabel">Нахил (Skew X):</span>
+                            <span class="logo-control-val" id="chrono-skew-val">-25°</span>
+                        </div>
+                        <input type="range" id="chrono-skew-range" min="-35" max="35" step="1" value="-25"
+                            class="logo-slider">
+                    </div>
+
+                    <div class="logo-control-cell">
+                        <div class="logo-control-head">
+                            <span class="logo-control-label" data-i18n="chronoScaleLabel">Масштаб (Scale):</span>
+                            <span class="logo-control-val" id="chrono-scale-val">2.15x</span>
+                        </div>
+                        <input type="range" id="chrono-scale-range" min="0.8" max="2.6" step="0.05" value="2.15"
+                            class="logo-slider">
+                    </div>
+                </div>
+
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog
+                        data-i18n="btnCancel">Скасувати</button>
+                    <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="chrono-icon"
+                        data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pwa-install-banner" id="pwa-install-banner" role="dialog" aria-labelledby="pwa-banner-title"
+        aria-modal="false">
+        <div class="pwa-install-content">
+            <div class="pwa-install-icon">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="64" rx="14" fill="#141720" stroke="var(--border)" stroke-width="2" />
+                    <g transform="translate(32, 32) scale(0.7) translate(-32, -32)">
+                        <polygon points="10,46 22,18 32,18 20,46" fill="#1C202B" stroke="var(--text-muted)"
+                            stroke-width="2.5" />
+                        <polygon points="32,46 44,18 54,18 42,46" fill="#1C202B" stroke="var(--text-muted)"
+                            stroke-width="2.5" />
+                        <g transform="translate(32, 32) skewX(-25) scale(2.15) translate(-12, -12)">
+                            <path
+                                d="M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z"
+                                fill="var(--accent)" stroke="var(--accent)" stroke-width="0.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="pwa-install-text">
+                <div class="pwa-install-title" id="pwa-banner-title" data-i18n="pwaInstallTitle">Встановити ComicFlow
+                </div>
+                <div class="pwa-install-desc" data-i18n="pwaInstallDesc">Додайте додаток на екран для швидкого запуску
+                    та читання</div>
+            </div>
+            <div class="pwa-install-actions">
+                <button type="button" class="pwa-btn-dismiss" id="pwa-dismiss-btn"
+                    data-i18n="pwaDismiss">Пізніше</button>
+                <button type="button" class="pwa-btn-install" id="pwa-install-btn"
+                    data-i18n="pwaInstall">Встановити</button>
+            </div>
+        </div>
+        <div class="pwa-ios-instructions" id="pwa-ios-instructions">
+            <span data-i18n="pwaIosTip">Натисніть «Поділитися» та виберіть «На початковий екран»</span>
+        </div>
+    </div>
+</body>
+
+</html>
