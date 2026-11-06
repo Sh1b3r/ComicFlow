@@ -1622,18 +1622,34 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('search-active');
         }
 
+        const outgoingView = document.querySelector('.app-view.active');
+        const targetView = document.getElementById(`view-${viewName}`);
+
+        if (outgoingView && outgoingView !== targetView) {
+            outgoingView.classList.remove('active', 'slide-from-right', 'slide-from-left', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+            outgoingView.classList.add('view-exiting');
+            if (direction === 'right') outgoingView.classList.add('view-exiting-left');
+            else if (direction === 'left') outgoingView.classList.add('view-exiting-right');
+            else outgoingView.classList.add('view-exiting-fade');
+
+            setTimeout(() => {
+                outgoingView.classList.remove('view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+            }, 300);
+        }
+
         views.forEach(v => {
-            const isTarget = v.id === `view-${viewName}`;
-            v.classList.remove('slide-from-right', 'slide-from-left');
-            if (isTarget) {
-                v.classList.add('active');
-                if (direction === 'right') v.classList.add('slide-from-right');
-                else if (direction === 'left') v.classList.add('slide-from-left');
-                setTimeout(() => v.classList.remove('slide-from-right', 'slide-from-left'), 260);
-            } else {
-                v.classList.remove('active');
+            if (v !== outgoingView && v !== targetView) {
+                v.classList.remove('active', 'slide-from-right', 'slide-from-left', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
             }
         });
+
+        if (targetView) {
+            targetView.classList.remove('slide-from-right', 'slide-from-left', 'view-exiting', 'view-exiting-left', 'view-exiting-right', 'view-exiting-fade');
+            targetView.classList.add('active');
+            if (direction === 'right') targetView.classList.add('slide-from-right');
+            else if (direction === 'left') targetView.classList.add('slide-from-left');
+            setTimeout(() => targetView.classList.remove('slide-from-right', 'slide-from-left'), 320);
+        }
 
         navButtons.forEach(btn => {
             const btnView = btn.dataset.view;
@@ -1657,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (['search', 'chronology', 'bookmarks', 'settings'].includes(viewName)) updateRouteHash('#' + viewName);
         }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
 
     navButtons.forEach(btn => {
@@ -1775,8 +1791,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => switchView('home'));
     });
 
-    if (titleBackCatalog) titleBackCatalog.addEventListener('click', () => switchView('home'));
-    if (titleQuickBack) titleQuickBack.addEventListener('click', () => switchView('home'));
+    if (titleBackCatalog) titleBackCatalog.addEventListener('click', () => switchView('home', true, 'left'));
+    if (titleQuickBack) titleQuickBack.addEventListener('click', () => switchView('home', true, 'left'));
 
     function getSearchHistory() {
         try {
@@ -3073,7 +3089,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titleBookmarkBtn.textContent = isBookmarked ? I18N[currentAppLanguage].inBookmarks : I18N[currentAppLanguage].addBookmark;
     }
 
-    function openComicTitle(comicId, shouldUpdateHash = true) {
+    function openComicTitle(comicId, shouldUpdateHash = true, direction = 'right') {
         const comic = COMICS_DATA[comicId] || COMICS_DATA['secret-wars'];
         currentComicId = comic.id;
 
@@ -3194,7 +3210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateBookmarkButtonUI(comic.id);
         }
 
-        switchView('title', false);
+        switchView('title', false, direction);
 
         if (shouldUpdateHash) {
             updateRouteHash('#comic=' + comic.id);
@@ -3373,12 +3389,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const endBackBtn = endCard.querySelector('#reader-end-back-title-btn');
             if (endBackBtn) {
                 endBackBtn.addEventListener('click', () => {
-                    openComicTitle(comic.id);
+                    openComicTitle(comic.id, true, 'left');
                 });
             }
         }
 
-        switchView('reader', false);
+        switchView('reader', false, 'right');
 
         currentReaderPageIndex = 0;
         setReaderMode(currentReaderMode);
@@ -3416,7 +3432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (readerBackToTitle) {
         readerBackToTitle.addEventListener('click', () => {
-            openComicTitle(currentComicId);
+            openComicTitle(currentComicId, true, 'left');
         });
     }
 
