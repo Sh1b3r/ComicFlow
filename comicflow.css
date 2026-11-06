@@ -2664,7 +2664,7 @@ body.reader-active .app-container {
     flex-direction: column;
     align-items: center;
     background-color: #07080b;
-    gap: 16px;
+    gap: 6px;
 }
 
 .reader-strip-container.mode-page {
@@ -3800,12 +3800,12 @@ body.nav-mode-bottom .nav-btn:hover::before {
     .reader-strip-container {
         width: 100%;
         padding: 0 0 24px;
-        gap: 10px;
+        gap: 4px;
     }
 
     .comic-strip-image-page {
         border-radius: 0;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        box-shadow: none;
     }
 }
 
