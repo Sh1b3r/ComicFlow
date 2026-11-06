@@ -3609,6 +3609,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const banner = document.getElementById('pwa-install-banner');
         const installBtn = document.getElementById('pwa-install-btn');
         const dismissBtn = document.getElementById('pwa-dismiss-btn');
+        const closeBtn = document.getElementById('pwa-close-btn');
         const iosTip = document.getElementById('pwa-ios-instructions');
         if (!banner) return;
 
@@ -3638,6 +3639,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (dismissBtn) {
             dismissBtn.addEventListener('click', () => {
+                banner.classList.remove('visible');
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
                 banner.classList.remove('visible');
             });
         }
