@@ -1236,20 +1236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         { img: 'images/ultron/webtoon/panel_108.jpg' },
                         { img: 'images/ultron/webtoon/panel_109.jpg' },
                         { img: 'images/ultron/webtoon/panel_110.jpg' },
-                        { img: 'images/ultron/webtoon/panel_111.jpg' },
-                        { img: 'images/ultron/webtoon/panel_112.jpg' },
-                        { img: 'images/ultron/webtoon/panel_113.jpg' },
-                        { img: 'images/ultron/webtoon/panel_114.jpg' },
-                        { img: 'images/ultron/webtoon/panel_115.jpg' },
-                        { img: 'images/ultron/webtoon/panel_116.jpg' },
-                        { img: 'images/ultron/webtoon/panel_117.jpg' },
-                        { img: 'images/ultron/webtoon/panel_118.jpg' },
-                        { img: 'images/ultron/webtoon/panel_119.jpg' },
-                        { img: 'images/ultron/webtoon/panel_120.jpg' },
-                        { img: 'images/ultron/webtoon/panel_121.jpg' },
-                        { img: 'images/ultron/webtoon/panel_122.jpg' },
-                        { img: 'images/ultron/webtoon/panel_123.jpg' },
-                        { img: 'images/ultron/webtoon/panel_124.jpg' }
+                        { img: 'images/ultron/webtoon/panel_111.jpg' }
                     ]
                 },
                 {
