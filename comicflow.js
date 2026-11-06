@@ -258,6 +258,14 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsSub: 'Параметри інтерфейсу, навігації, теми та читанки',
             btnCancel: 'Скасувати',
             btnSave: 'Зберегти',
+            btnClose: 'Закрити',
+            settingsInstall: 'Встановити додаток',
+            settingsInstallBtn: 'Встановити',
+            settingsInstalled: 'Встановлено ✓',
+            installDialogTitle: 'Встановлення ComicFlow',
+            installDialogPrompt: 'Додайте ComicFlow на головний екран вашого пристрою для швидкого доступу та читання на весь екран.',
+            installIosGuide: 'Щоб встановити на iPhone / iPad: натисніть кнопку «Поділитися» внизу Safari та оберіть «На екран Додому».',
+            installBrowserGuide: 'Натисніть на іконку встановлення в адресному рядку або відкрийте меню браузера (⋮) та оберіть «Встановити додаток».',
             settingsNavPrompt: 'Оберіть де відображати панель навігації',
             settingsReaderPrompt: 'Оберіть спосіб перегляду сторінок',
             settingsThemePrompt: 'Оберіть кольорову гаму оформлення',
@@ -370,6 +378,14 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsSub: 'Interface preferences, navigation, themes and reader options',
             btnCancel: 'Cancel',
             btnSave: 'Save',
+            btnClose: 'Close',
+            settingsInstall: 'Install App',
+            settingsInstallBtn: 'Install',
+            settingsInstalled: 'Installed ✓',
+            installDialogTitle: 'Install ComicFlow',
+            installDialogPrompt: 'Add ComicFlow to your home screen for quick launch and fullscreen reading.',
+            installIosGuide: 'To install on iOS: tap "Share" at the bottom of Safari and choose "Add to Home Screen".',
+            installBrowserGuide: 'Click the install icon in the address bar or open browser menu (⋮) and choose "Install app".',
             settingsNavPrompt: 'Choose where navigation bar is placed',
             settingsReaderPrompt: 'Choose comic pages reading mode',
             settingsThemePrompt: 'Choose interface accent color',
@@ -480,6 +496,14 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsSub: 'Параметры интерфейса, навигации, темы и читалки',
             btnCancel: 'Отмена',
             btnSave: 'Сохранить',
+            btnClose: 'Закрыть',
+            settingsInstall: 'Установить приложение',
+            settingsInstallBtn: 'Установить',
+            settingsInstalled: 'Установлено ✓',
+            installDialogTitle: 'Установка ComicFlow',
+            installDialogPrompt: 'Добавьте ComicFlow на главный экран вашего устройства для быстрого запуска и чтения на весь экран.',
+            installIosGuide: 'Чтобы установить на iPhone / iPad: нажмите кнопку «Поделиться» внизу Safari и выберите «На экран Домой».',
+            installBrowserGuide: 'Нажмите на иконку установки в адресной строке или откройте меню браузера (⋮) и выберите «Установить приложение».',
             settingsNavPrompt: 'Выберите где отображать панель навигации',
             settingsReaderPrompt: 'Выберите способ чтения страниц',
             settingsThemePrompt: 'Выберите цветовую гамму оформления',
@@ -2513,6 +2537,100 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (currentAppLanguage === 'en') langValEl.textContent = 'English';
             else if (currentAppLanguage === 'ru') langValEl.textContent = 'Русский';
         }
+
+        updateInstallUI();
+    }
+
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        deferredInstallPrompt = e;
+        updateInstallUI();
+    });
+
+    window.addEventListener('appinstalled', () => {
+        deferredInstallPrompt = null;
+        updateInstallUI();
+    });
+
+    function isAppInstalled() {
+        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function updateInstallUI() {
+        const installBtnText = document.getElementById('settings-install-btn-text');
+        const installRow = document.getElementById('settings-install-row');
+        const lang = currentAppLanguage || 'ua';
+        const i18n = I18N[lang] || I18N.ua;
+
+        if (!installBtnText) return;
+
+        if (isAppInstalled()) {
+            installBtnText.textContent = i18n.settingsInstalled || 'Встановлено ✓';
+            installBtnText.classList.add('installed');
+            if (installRow) installRow.setAttribute('aria-disabled', 'true');
+        } else {
+            installBtnText.textContent = i18n.settingsInstallBtn || 'Встановити';
+            installBtnText.classList.remove('installed');
+            if (installRow) installRow.removeAttribute('aria-disabled');
+        }
+    }
+
+    const settingsInstallRow = document.getElementById('settings-install-row');
+    if (settingsInstallRow) {
+        settingsInstallRow.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (isAppInstalled()) {
+                return;
+            }
+
+            if (deferredInstallPrompt) {
+                try {
+                    deferredInstallPrompt.prompt();
+                    const choice = await deferredInstallPrompt.userChoice;
+                    if (choice && choice.outcome === 'accepted') {
+                        deferredInstallPrompt = null;
+                        updateInstallUI();
+                    }
+                } catch (_) { }
+                return;
+            }
+
+            const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const promptEl = document.getElementById('dialog-install-prompt');
+            const actionBtn = document.getElementById('dialog-install-action-btn');
+            const lang = currentAppLanguage || 'ua';
+            const i18n = I18N[lang] || I18N.ua;
+
+            if (isIos) {
+                if (promptEl) promptEl.textContent = i18n.installIosGuide;
+                if (actionBtn) actionBtn.style.display = 'none';
+            } else {
+                if (promptEl) promptEl.textContent = i18n.installBrowserGuide;
+                if (actionBtn) actionBtn.style.display = 'none';
+            }
+
+            openSubdialog('dialog-install');
+        });
+    }
+
+    const dialogInstallActionBtn = document.getElementById('dialog-install-action-btn');
+    if (dialogInstallActionBtn) {
+        dialogInstallActionBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (deferredInstallPrompt) {
+                try {
+                    deferredInstallPrompt.prompt();
+                    const choice = await deferredInstallPrompt.userChoice;
+                    if (choice && choice.outcome === 'accepted') {
+                        deferredInstallPrompt = null;
+                        updateInstallUI();
+                    }
+                } catch (_) { }
+            }
+            closeSubdialogs();
+        });
     }
 
     let subdialogSnapshot = {};

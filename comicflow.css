@@ -3313,6 +3313,34 @@ body.nav-mode-bottom .settings-modal {
     box-shadow: 0 0 6px var(--accent);
 }
 
+.settings-install-pill {
+    padding: 4px 14px;
+    border-radius: 6px;
+    background-color: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s, transform 0.15s, opacity 0.2s;
+    user-select: none;
+}
+
+.settings-row-install:hover .settings-install-pill {
+    opacity: 0.92;
+    transform: scale(1.03);
+}
+
+.settings-install-pill.installed {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    pointer-events: none;
+    transform: none;
+}
+
 .settings-subdialog-overlay {
     position: absolute;
     inset: 0;

@@ -878,6 +878,13 @@
                             видань</span>
                         <span class="settings-row-value" id="settings-val-lang">Українська</span>
                     </button>
+
+                    <button type="button" class="settings-row settings-row-install" id="settings-install-row">
+                        <span class="settings-row-label" data-i18n="settingsInstall">Встановити додаток</span>
+                        <span class="settings-row-value" id="settings-val-install">
+                            <span class="settings-install-pill" id="settings-install-btn-text" data-i18n="settingsInstallBtn">Встановити</span>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1033,6 +1040,17 @@
                         data-i18n="btnCancel">Скасувати</button>
                     <button type="button" class="subdialog-action-btn save-btn" data-save-dialog="lang"
                         data-i18n="btnSave">Зберегти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-subdialog-overlay" id="dialog-install" role="dialog" aria-modal="true">
+            <div class="settings-subdialog">
+                <h4 class="subdialog-title" data-i18n="installDialogTitle">Встановлення ComicFlow</h4>
+                <div class="subdialog-prompt" id="dialog-install-prompt" data-i18n="installDialogPrompt">Додайте ComicFlow на головний екран вашого пристрою для швидкого доступу та читання на весь екран.</div>
+                <div class="subdialog-actions">
+                    <button type="button" class="subdialog-action-btn cancel-btn" data-close-dialog data-i18n="btnClose">Закрити</button>
+                    <button type="button" class="subdialog-action-btn save-btn" id="dialog-install-action-btn" data-i18n="settingsInstallBtn">Встановити</button>
                 </div>
             </div>
         </div>
