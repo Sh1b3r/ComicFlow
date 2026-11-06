@@ -406,9 +406,9 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsLangHeading: 'Interface & Edition Language',
             settingsLangEn: 'English (EN)',
             metaScanLang: 'Edition Language',
-            scanBadge_ru: 'RU scan',
-            scanBadge_ua: 'UA scan',
-            scanBadge_en: 'EN scan',
+            scanBadge_ru: 'RU',
+            scanBadge_ua: 'UA',
+            scanBadge_en: 'EN',
             scanDesc_ru: 'Russian (original scans, no translation)',
             scanDesc_ua: 'Ukrainian',
             scanDesc_en: 'English (original)',
@@ -523,9 +523,9 @@ document.addEventListener('DOMContentLoaded', () => {
             colorBrightness: 'Яркость',
             settingsLangHeading: 'Язык интерфейса и изданий',
             metaScanLang: 'Язык издания',
-            scanBadge_ru: 'RU скан',
-            scanBadge_ua: 'UA скан',
-            scanBadge_en: 'EN скан',
+            scanBadge_ru: 'RU',
+            scanBadge_ua: 'UA',
+            scanBadge_en: 'EN',
             scanDesc_ru: 'Русский (оригинальные сканы)',
             scanDesc_ua: 'Украинский',
             scanDesc_en: 'Английский (оригинал)',
@@ -566,6 +566,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let currentAppLanguage = detectUserLanguage();
+
+    function getResolvedScanLanguage(comic, prefLang = currentAppLanguage) {
+        if (!comic) return 'ua';
+        const available = comic.scanLangs || (comic.scanLang ? [comic.scanLang] : ['ua', 'ru', 'en']);
+        let fallbackOrder;
+        if (prefLang === 'ru') {
+            fallbackOrder = ['ru', 'en', 'ua'];
+        } else if (prefLang === 'en') {
+            fallbackOrder = ['en', 'ru', 'ua'];
+        } else {
+            fallbackOrder = ['ua', 'ru', 'en'];
+        }
+        for (const lang of fallbackOrder) {
+            if (available.includes(lang)) {
+                return lang;
+            }
+        }
+        return available[0] || 'ua';
+    }
 
     const DB_NAME = 'ComicFlowDB';
     const DB_VERSION = 1;
@@ -827,6 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Secret Wars',
             fullTitle: 'Secret Wars (2015)',
             origTitle: 'Marvel Comics • Оригінал: Secret Wars #1-9',
+            scanLangs: ['ua', 'ru', 'en'],
             issue: '#009',
             year: '2015',
             tags: '616 events cosmic secret wars hickman',
@@ -938,6 +958,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'House of X',
             fullTitle: 'House of X (2019)',
             origTitle: 'Marvel Comics • House of X #1-6',
+            scanLangs: ['ua', 'en'],
             issue: '#001',
             year: '2019',
             tags: 'x-men house of x hickman mutants 616 krakoa',
@@ -1007,6 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Ultimate Spider-Man',
             fullTitle: 'Ultimate Spider-Man (2024)',
             origTitle: 'Marvel Comics • Ultimate Spider-Man (Vol. 2)',
+            scanLangs: ['ua', 'ru', 'en'],
             issue: '#001',
             year: '2024',
             tags: 'spider-man ultimate 1610 ongoing hickman peter parker',
@@ -1077,6 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fullTitle: 'Age of Ultron (2013)',
             origTitle: 'Marvel Comics • Age of Ultron #1-10',
             scanLang: 'ru',
+            scanLangs: ['ru'],
             issue: '#001',
             year: '2013',
             tags: 'ultron avengers 616 events bendis age of ultron',
@@ -1219,6 +1242,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Iron Man: Extremis',
             fullTitle: 'Iron Man: Extremis (2005)',
             origTitle: 'Marvel Comics • The Invincible Iron Man (Vol. 4) #1-6',
+            scanLangs: ['ua', 'en'],
             issue: '#005',
             year: '2005',
             tags: 'iron man 616 extremis ellis tony stark',
@@ -1267,6 +1291,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Black Panther: Nation',
             fullTitle: 'Black Panther: A Nation Under Our Feet (2016)',
             origTitle: 'Marvel Comics • Black Panther (Vol. 6) #1-12',
+            scanLangs: ['ua', 'en'],
             issue: '#001',
             year: '2016',
             tags: 'black panther wakanda 616 ongoing coates t\'challa',
@@ -1315,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Annihilation',
             fullTitle: 'Annihilation (2006)',
             origTitle: 'Marvel Comics • Annihilation #1-6',
+            scanLangs: ['en', 'ru'],
             issue: '#001',
             year: '2006',
             tags: 'cosmic 616 annihilation giffen nova galactus',
@@ -1363,6 +1389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Avengers: Disassembled',
             fullTitle: 'Avengers: Disassembled (2004)',
             origTitle: 'Marvel Comics • Avengers #500-503',
+            scanLangs: ['ua', 'en'],
             issue: '#500',
             year: '2004',
             tags: 'avengers 616 events bendis disassembled scarlet witch',
@@ -1414,8 +1441,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.dataset.comicId = comic.id;
         card.dataset.tags = comic.tags || '';
 
-        const sLang = comic.scanLang || 'ua';
-        const scanBadgeText = I18N[currentAppLanguage]['scanBadge_' + sLang] || (sLang.toUpperCase() + ' скан');
+        const sLang = getResolvedScanLanguage(comic);
+        const scanBadgeText = I18N[currentAppLanguage]['scanBadge_' + sLang] || sLang.toUpperCase();
 
         card.innerHTML = `
             <div class="card-cover-wrap">
@@ -3103,9 +3130,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? I18N[currentAppLanguage].statusCompleted
                 : I18N[currentAppLanguage].statusOngoing;
         }
+        const sLang = getResolvedScanLanguage(comic);
+        const titleCoverLangPill = document.getElementById('title-cover-lang-pill') || document.querySelector('#title-cover-frame .card-lang-pill');
+        if (titleCoverLangPill) {
+            titleCoverLangPill.textContent = I18N[currentAppLanguage]['scanBadge_' + sLang] || sLang.toUpperCase();
+        }
         if (titleMetaScanLang) {
-            const sLang = comic.scanLang || 'ua';
-            titleMetaScanLang.textContent = I18N[currentAppLanguage]['scanDesc_' + sLang] || sLang;
+            titleMetaScanLang.textContent = I18N[currentAppLanguage]['scanDesc_' + sLang] || sLang.toUpperCase();
         }
         if (titleMetaChapters) titleMetaChapters.textContent = `${comic.chapters.length} ${I18N[currentAppLanguage].issuesCount}`;
 
@@ -3262,8 +3293,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (readerComicTitleNav) readerComicTitleNav.textContent = titleText;
         if (readerChapterTitleNav) readerChapterTitleNav.textContent = chTitle;
         if (readerScanLangBadge) {
-            const sLang = comic.scanLang || 'ua';
-            readerScanLangBadge.textContent = I18N[currentAppLanguage]['scanBadge_' + sLang] || (sLang.toUpperCase() + ' скан');
+            const sLang = getResolvedScanLanguage(comic);
+            readerScanLangBadge.textContent = I18N[currentAppLanguage]['scanBadge_' + sLang] || sLang.toUpperCase();
         }
 
         if (readerChapterSelect) {
