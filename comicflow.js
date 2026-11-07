@@ -1294,8 +1294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         { img: 'images/ultron/webtoon/panel_111.jpg' },
                         { img: 'images/ultron/webtoon/panel_112.jpg' },
                         { img: 'images/ultron/webtoon/panel_113.jpg' },
-                        { img: 'images/ultron/webtoon/panel_114.jpg' },
-                        { img: 'images/ultron/webtoon/panel_115.jpg' }
+                        { img: 'images/ultron/webtoon/panel_114.jpg' }
                     ]
                 },
                 {
