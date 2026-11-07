@@ -991,7 +991,7 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
     background-color: var(--bg-main);
 }
 
-.app-view.active:not(.slide-from-right):not(.slide-from-left):not(.slide-from-pop) {
+.app-view.view-fade-in {
     animation: viewFadeIn 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
