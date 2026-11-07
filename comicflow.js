@@ -222,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nextChapter: 'Наступний випуск',
             backToDetails: '← До опису коміксу',
             backToCatalog: '← Назад до каталогу',
+            lightboxHint: 'Подвійний клік або жест двома пальцями для зуму',
             langLabel: 'UA',
             heroTitle: 'ЕРА АЛЬТРОНА',
             heroBadge: 'Культова подія • Earth-616',
@@ -343,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nextChapter: 'Next Issue',
             backToDetails: '← Back to Details',
             backToCatalog: '← Back to Catalog',
+            lightboxHint: 'Double tap or pinch to zoom',
             langLabel: 'EN',
             heroTitle: 'AGE OF ULTRON',
             heroBadge: 'Epic Event • Earth-616',
@@ -465,6 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nextChapter: 'Следующий выпуск',
             backToDetails: '← К описанию комикса',
             backToCatalog: '← Назад в каталог',
+            lightboxHint: 'Двойной клик или жест двумя пальцами для зума',
             langLabel: 'RU',
             heroTitle: 'ЭРА АЛЬТРОНА',
             heroBadge: 'Культовое событие • Earth-616',
@@ -1764,6 +1767,10 @@ document.addEventListener('DOMContentLoaded', () => {
             lastMainView = viewName;
         }
         currentActiveView = viewName;
+
+        if (viewName !== 'reader' && readerLightbox && !readerLightbox.classList.contains('hidden-overlay')) {
+            closeReaderLightbox();
+        }
 
         if (settingsModal && settingsModal.classList.contains('open')) {
             settingsModal.classList.remove('open');
@@ -3739,44 +3746,202 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const readerLightbox = document.getElementById('reader-lightbox');
+    const readerLightboxImg = document.getElementById('reader-lightbox-img');
+    const readerLightboxStage = document.getElementById('reader-lightbox-stage');
+    const readerLightboxClose = document.getElementById('reader-lightbox-close');
+    const readerLightboxHint = document.getElementById('reader-lightbox-hint');
+
     let touchStartX = 0;
     let touchStartY = 0;
-    let activeZoomedImg = null;
     let lastTapTime = 0;
     let lastTapX = 0;
     let lastTapY = 0;
 
-    let zoomOriginScrollY = 0;
+    let lightboxScale = 1;
+    let lightboxPanX = 0;
+    let lightboxPanY = 0;
+    let lightboxPinchStartDist = 0;
+    let lightboxPinchStartScale = 1;
+    let lightboxTouchStartPanX = 0;
+    let lightboxTouchStartPanY = 0;
+    let lightboxTouchStartX = 0;
+    let lightboxTouchStartY = 0;
+    let isLightboxDragging = false;
+    let lightboxHintTimer = null;
 
-    function resetActiveZoom() {
-        if (activeZoomedImg) {
-            activeZoomedImg.classList.remove('is-zoomed');
-            activeZoomedImg.style.transformOrigin = '';
-            activeZoomedImg = null;
+    function applyLightboxTransform(smooth = false) {
+        if (!readerLightboxImg) return;
+        if (lightboxScale <= 1.02) {
+            lightboxScale = 1;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+        } else {
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
+            const baseW = readerLightboxImg.offsetWidth || winW;
+            const baseH = readerLightboxImg.offsetHeight || winH;
+            const scaledW = baseW * lightboxScale;
+            const scaledH = baseH * lightboxScale;
+            const maxPanX = Math.max(0, (scaledW - winW) / 2 + 10);
+            const maxPanY = Math.max(0, (scaledH - winH) / 2 + 10);
+            lightboxPanX = Math.max(-maxPanX, Math.min(maxPanX, lightboxPanX));
+            lightboxPanY = Math.max(-maxPanY, Math.min(maxPanY, lightboxPanY));
+        }
+        readerLightboxImg.style.transition = smooth ? 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+        readerLightboxImg.style.transform = `translate3d(${lightboxPanX}px, ${lightboxPanY}px, 0) scale(${lightboxScale})`;
+    }
+
+    function openReaderLightbox(src, alt) {
+        if (!readerLightbox || !readerLightboxImg) return;
+        lightboxScale = 1;
+        lightboxPanX = 0;
+        lightboxPanY = 0;
+        readerLightboxImg.src = src;
+        readerLightboxImg.alt = alt || '';
+        applyLightboxTransform(false);
+        readerLightbox.classList.remove('hidden-overlay');
+        document.body.style.overflow = 'hidden';
+        if (readerLightboxHint) {
+            readerLightboxHint.classList.remove('fade-out');
+            clearTimeout(lightboxHintTimer);
+            lightboxHintTimer = setTimeout(() => {
+                if (readerLightboxHint) readerLightboxHint.classList.add('fade-out');
+            }, 2600);
         }
     }
 
-    function toggleImageZoom(img, clientX, clientY) {
-        if (img.classList.contains('is-zoomed')) {
-            resetActiveZoom();
-            return;
+    function closeReaderLightbox() {
+        if (!readerLightbox) return;
+        readerLightbox.classList.add('hidden-overlay');
+        document.body.style.overflow = '';
+        lightboxScale = 1;
+        lightboxPanX = 0;
+        lightboxPanY = 0;
+        if (readerLightboxImg) {
+            applyLightboxTransform(false);
+            readerLightboxImg.src = '';
         }
-        resetActiveZoom();
-        const rect = img.getBoundingClientRect();
-        const xPercent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
-        const yPercent = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
-        img.style.transformOrigin = `${xPercent.toFixed(1)}% ${yPercent.toFixed(1)}%`;
-        img.classList.add('is-zoomed');
-        activeZoomedImg = img;
-        zoomOriginScrollY = window.scrollY;
     }
 
-    const readerZoomToggleBtn = document.getElementById('reader-zoom-toggle-btn');
-    if (readerZoomToggleBtn && readerStrip) {
-        readerZoomToggleBtn.addEventListener('click', () => {
-            readerStrip.classList.toggle('is-magnified');
-            const isMag = readerStrip.classList.contains('is-magnified');
-            readerZoomToggleBtn.classList.toggle('active', isMag);
+    if (readerLightboxClose) {
+        readerLightboxClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeReaderLightbox();
+        });
+    }
+
+    if (readerLightboxStage) {
+        let lastLightboxTapTime = 0;
+        let lastLightboxTapX = 0;
+        let lastLightboxTapY = 0;
+
+        readerLightboxStage.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                isLightboxDragging = false;
+                lightboxPinchStartDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                lightboxPinchStartScale = lightboxScale;
+            } else if (e.touches.length === 1) {
+                isLightboxDragging = true;
+                lightboxTouchStartX = e.touches[0].clientX;
+                lightboxTouchStartY = e.touches[0].clientY;
+                lightboxTouchStartPanX = lightboxPanX;
+                lightboxTouchStartPanY = lightboxPanY;
+            }
+        }, { passive: true });
+
+        readerLightboxStage.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && lightboxPinchStartDist > 0) {
+                e.preventDefault();
+                const dist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                lightboxScale = Math.max(1, Math.min(3.8, lightboxPinchStartScale * (dist / lightboxPinchStartDist)));
+                applyLightboxTransform(false);
+            } else if (e.touches.length === 1 && isLightboxDragging) {
+                const deltaX = e.touches[0].clientX - lightboxTouchStartX;
+                const deltaY = e.touches[0].clientY - lightboxTouchStartY;
+                if (lightboxScale > 1) {
+                    e.preventDefault();
+                    lightboxPanX = lightboxTouchStartPanX + deltaX;
+                    lightboxPanY = lightboxTouchStartPanY + deltaY;
+                    applyLightboxTransform(false);
+                } else if (deltaY > 20) {
+                    readerLightboxImg.style.transform = `translate3d(0, ${deltaY * 0.6}px, 0) scale(1)`;
+                }
+            }
+        }, { passive: false });
+
+        readerLightboxStage.addEventListener('touchend', (e) => {
+            if (isLightboxDragging && lightboxScale === 1 && e.changedTouches.length > 0) {
+                const diffY = e.changedTouches[0].clientY - lightboxTouchStartY;
+                if (diffY > 90) {
+                    closeReaderLightbox();
+                    isLightboxDragging = false;
+                    return;
+                }
+            }
+            isLightboxDragging = false;
+            applyLightboxTransform(true);
+
+            if (e.changedTouches.length === 1) {
+                const touch = e.changedTouches[0];
+                const now = Date.now();
+                const dist = Math.hypot(touch.clientX - lastLightboxTapX, touch.clientY - lastLightboxTapY);
+                if (now - lastLightboxTapTime < 350 && dist < 50) {
+                    e.preventDefault();
+                    if (lightboxScale > 1.2) {
+                        lightboxScale = 1;
+                        lightboxPanX = 0;
+                        lightboxPanY = 0;
+                    } else {
+                        lightboxScale = 2.4;
+                        const winW = window.innerWidth;
+                        const winH = window.innerHeight;
+                        lightboxPanX = (winW / 2 - touch.clientX) * 1.2;
+                        lightboxPanY = (winH / 2 - touch.clientY) * 1.2;
+                    }
+                    applyLightboxTransform(true);
+                    lastLightboxTapTime = 0;
+                    return;
+                }
+                lastLightboxTapTime = now;
+                lastLightboxTapX = touch.clientX;
+                lastLightboxTapY = touch.clientY;
+            }
+        });
+
+        readerLightboxStage.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            if (lightboxScale > 1.2) {
+                lightboxScale = 1;
+                lightboxPanX = 0;
+                lightboxPanY = 0;
+            } else {
+                lightboxScale = 2.4;
+                const winW = window.innerWidth;
+                const winH = window.innerHeight;
+                lightboxPanX = (winW / 2 - e.clientX) * 1.2;
+                lightboxPanY = (winH / 2 - e.clientY) * 1.2;
+            }
+            applyLightboxTransform(true);
+        });
+
+        readerLightboxStage.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY < 0 ? 0.25 : -0.25;
+            lightboxScale = Math.max(1, Math.min(3.8, lightboxScale + delta));
+            applyLightboxTransform(false);
+        }, { passive: false });
+
+        readerLightboxStage.addEventListener('click', (e) => {
+            if (e.target === readerLightboxStage && lightboxScale <= 1.05) {
+                closeReaderLightbox();
+            }
         });
     }
 
@@ -3807,24 +3972,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (img) {
-                if (activeZoomedImg && activeZoomedImg === img) {
-                    resetActiveZoom();
-                    lastTapTime = 0;
-                    return;
-                }
                 const now = Date.now();
                 const dist = Math.hypot(touch.clientX - lastTapX, touch.clientY - lastTapY);
                 if (now - lastTapTime < 450 && dist < 65) {
                     e.preventDefault();
-                    toggleImageZoom(img, touch.clientX, touch.clientY);
+                    openReaderLightbox(img.src, img.alt);
                     lastTapTime = 0;
                 } else {
                     lastTapTime = now;
                     lastTapX = touch.clientX;
                     lastTapY = touch.clientY;
                 }
-            } else if (activeZoomedImg) {
-                resetActiveZoom();
             }
         }, { passive: false });
 
@@ -3832,20 +3990,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = e.target.closest('.reader-strip-image');
             if (!img) return;
             e.preventDefault();
-            toggleImageZoom(img, e.clientX, e.clientY);
-        });
-
-        readerStrip.addEventListener('click', (e) => {
-            if (activeZoomedImg && !e.target.closest('.reader-strip-image')) {
-                resetActiveZoom();
-            }
+            openReaderLightbox(img.src, img.alt);
         });
     }
 
     window.addEventListener('scroll', () => {
-        if (activeZoomedImg && Math.abs(window.scrollY - zoomOriginScrollY) > 220) {
-            resetActiveZoom();
-        }
 
         if (currentActiveView !== 'reader' || currentReaderMode === 'page') return;
 
@@ -3924,6 +4073,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            if (readerLightbox && !readerLightbox.classList.contains('hidden-overlay')) {
+                closeReaderLightbox();
+                return;
+            }
             const openSub = document.querySelector('.settings-subdialog-overlay.open');
             if (openSub) {
                 closeSubdialogs();
