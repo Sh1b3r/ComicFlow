@@ -2615,6 +2615,11 @@ document.addEventListener('DOMContentLoaded', () => {
             heroReadBtn.dataset.comicId = 'ultron';
         }
 
+        const heroPosterImg = document.getElementById('hero-poster-img');
+        if (heroPosterImg) {
+            heroPosterImg.src = 'images/ultron/cover.jpg';
+        }
+
         const posterLogo = document.querySelector('.hero-poster .poster-logo');
         if (posterLogo) posterLogo.textContent = I18N[lang].heroLogo || 'AGE OF ULTRON';
         const posterFooter = document.querySelector('.hero-poster .poster-footer');
