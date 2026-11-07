@@ -3490,6 +3490,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openComicReader(comicId, chapterNum, shouldUpdateHash = true) {
+        if (readerLightbox && !readerLightbox.classList.contains('hidden-overlay')) {
+            closeReaderLightbox();
+        }
+        document.body.style.overflow = '';
         const comic = COMICS_DATA[comicId] || COMICS_DATA['ultron'];
         currentComicId = comic.id;
         currentChapterNum = chapterNum || 1;
@@ -3940,24 +3944,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: false });
 
         readerLightboxStage.addEventListener('click', (e) => {
-            if (e.target === readerLightboxStage && lightboxScale <= 1.05) {
+            if (lightboxScale <= 1.05) {
+                closeReaderLightbox();
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && readerLightbox && !readerLightbox.classList.contains('hidden-overlay')) {
                 closeReaderLightbox();
             }
         });
     }
 
+    let stripTouchStartX = 0;
+    let stripTouchStartY = 0;
+    let stripTouchStartTime = 0;
+
     if (readerStrip) {
         readerStrip.addEventListener('touchstart', (e) => {
-            if (currentReaderMode === 'page') {
-                const touch = e.changedTouches[0];
-                touchStartX = touch.clientX;
-                touchStartY = touch.clientY;
+            if (e.touches && e.touches.length === 1) {
+                const touch = e.touches[0];
+                stripTouchStartX = touch.clientX;
+                stripTouchStartY = touch.clientY;
+                stripTouchStartTime = Date.now();
+                if (currentReaderMode === 'page') {
+                    touchStartX = touch.clientX;
+                    touchStartY = touch.clientY;
+                }
             }
         }, { passive: true });
 
         readerStrip.addEventListener('touchend', (e) => {
+            if (!e.changedTouches || e.changedTouches.length === 0) return;
             const touch = e.changedTouches[0];
             const img = e.target.closest('.reader-strip-image');
+            const moveDist = Math.hypot(touch.clientX - stripTouchStartX, touch.clientY - stripTouchStartY);
+            const duration = Date.now() - stripTouchStartTime;
 
             if (currentReaderMode === 'page') {
                 const diffX = touch.clientX - touchStartX;
@@ -3972,10 +3994,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            if (moveDist > 12 || duration > 280) {
+                lastTapTime = 0;
+                return;
+            }
+
             if (img) {
                 const now = Date.now();
                 const dist = Math.hypot(touch.clientX - lastTapX, touch.clientY - lastTapY);
-                if (now - lastTapTime < 450 && dist < 65) {
+                if (now - lastTapTime < 320 && dist < 32) {
                     e.preventDefault();
                     openReaderLightbox(img.src, img.alt);
                     lastTapTime = 0;
@@ -3995,46 +4022,67 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.addEventListener('scroll', () => {
+    let isScrollTicking = false;
+    let lastReportedPageIndex = -1;
+    let saveProgressTimeout = null;
 
+    window.addEventListener('scroll', () => {
         if (currentActiveView !== 'reader' || currentReaderMode === 'page') return;
 
-        const scrollY = window.scrollY;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollY / maxScroll) * 100)) : 0;
+        if (!isScrollTicking) {
+            isScrollTicking = true;
+            requestAnimationFrame(() => {
+                isScrollTicking = false;
+                const scrollY = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = maxScroll > 0 ? Math.min(100, Math.max(0, (scrollY / maxScroll) * 100)) : 0;
 
-        if (readerScrollProgressBar) {
-            readerScrollProgressBar.style.width = `${progress}%`;
-        }
+                if (readerScrollProgressBar) {
+                    readerScrollProgressBar.style.width = `${progress}%`;
+                }
 
-        if (readerNavbar) {
-            if (scrollY <= 50) {
-                readerNavbar.classList.remove('nav-hidden');
-            } else if (scrollY > lastReaderScrollY + 8) {
-                readerNavbar.classList.add('nav-hidden');
-            } else if (scrollY < lastReaderScrollY - 8) {
-                readerNavbar.classList.remove('nav-hidden');
-            }
-            lastReaderScrollY = scrollY;
-        }
+                if (readerNavbar) {
+                    if (scrollY <= 50) {
+                        readerNavbar.classList.remove('nav-hidden');
+                    } else if (scrollY > lastReaderScrollY + 8) {
+                        readerNavbar.classList.add('nav-hidden');
+                    } else if (scrollY < lastReaderScrollY - 8) {
+                        readerNavbar.classList.remove('nav-hidden');
+                    }
+                    lastReaderScrollY = scrollY;
+                }
 
-        const pages = document.querySelectorAll('.comic-strip-page');
-        if (pages.length > 0) {
-            let currentPageIndex = 0;
-            pages.forEach((page, idx) => {
-                const rect = page.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.5) {
-                    currentPageIndex = idx;
+                const pages = readerStrip ? readerStrip.children : null;
+                const pageCount = pages ? pages.length : 0;
+                if (pageCount > 0) {
+                    let currentPageIndex = 0;
+                    const halfH = window.innerHeight * 0.5;
+                    for (let idx = 0; idx < pageCount; idx++) {
+                        const page = pages[idx];
+                        if (page.classList && page.classList.contains('comic-strip-page')) {
+                            const rect = page.getBoundingClientRect();
+                            if (rect.top <= halfH) {
+                                currentPageIndex = idx;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (currentPageIndex !== lastReportedPageIndex) {
+                        lastReportedPageIndex = currentPageIndex;
+                        if (readerProgressIndicator) {
+                            readerProgressIndicator.textContent = `${I18N[currentAppLanguage].page} ${currentPageIndex + 1} ${I18N[currentAppLanguage].pageOf} ${pageCount}`;
+                        }
+                        clearTimeout(saveProgressTimeout);
+                        saveProgressTimeout = setTimeout(() => {
+                            saveReadingProgress(currentComicId, currentChapterNum, currentPageIndex, pageCount);
+                        }, 250);
+                    }
                 }
             });
-
-            if (readerProgressIndicator) {
-                readerProgressIndicator.textContent = `${I18N[currentAppLanguage].page} ${currentPageIndex + 1} ${I18N[currentAppLanguage].pageOf} ${pages.length}`;
-            }
-
-            saveReadingProgress(currentComicId, currentChapterNum, currentPageIndex, pages.length);
         }
-    });
+    }, { passive: true });
 
     document.addEventListener('click', (e) => {
         const heroBtn = e.target.closest('.hero-read-btn');
