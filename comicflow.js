@@ -3638,7 +3638,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
         const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-        showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
+        showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`, true);
 
         const domImages = Array.from(readerStrip.querySelectorAll('.reader-strip-image')).slice(0, 5);
         let isDismissed = false;
@@ -3921,18 +3921,51 @@ document.addEventListener('DOMContentLoaded', () => {
         handleHashRoute();
     }
 
+    let preloaderShowTimer = null;
+    let preloaderShownTimestamp = Date.now();
+    const MIN_PRELOADER_DURATION = 500;
+    const PRELOADER_GRACE_DELAY = 150;
+
     function hidePreloader() {
         if (!preloaderOverlay) return;
+        if (preloaderShowTimer) {
+            clearTimeout(preloaderShowTimer);
+            preloaderShowTimer = null;
+            return;
+        }
+        if (!preloaderOverlay.classList.contains('hidden-overlay')) {
+            const elapsed = Date.now() - preloaderShownTimestamp;
+            const remaining = Math.max(0, MIN_PRELOADER_DURATION - elapsed);
+            if (remaining > 0) {
+                setTimeout(() => {
+                    if (preloaderOverlay) preloaderOverlay.classList.add('hidden-overlay');
+                }, remaining);
+                return;
+            }
+        }
         preloaderOverlay.classList.add('hidden-overlay');
     }
 
-    function showPreloader(titleText) {
+    function showPreloader(titleText, delayed = false) {
         if (!preloaderOverlay) return;
         const textEl = preloaderOverlay.querySelector('.preloader-text');
         if (textEl && titleText) {
             textEl.innerHTML = titleText;
         }
-        preloaderOverlay.classList.remove('hidden-overlay');
+        if (preloaderShowTimer) {
+            clearTimeout(preloaderShowTimer);
+            preloaderShowTimer = null;
+        }
+        if (delayed) {
+            preloaderShowTimer = setTimeout(() => {
+                preloaderShowTimer = null;
+                preloaderShownTimestamp = Date.now();
+                preloaderOverlay.classList.remove('hidden-overlay');
+            }, PRELOADER_GRACE_DELAY);
+        } else {
+            preloaderShownTimestamp = Date.now();
+            preloaderOverlay.classList.remove('hidden-overlay');
+        }
     }
 
     if (preloaderOverlay) {
