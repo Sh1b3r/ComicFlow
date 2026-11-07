@@ -549,7 +549,6 @@ button {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    animation: none !important;
 }
 
 .preloader-overlay.hidden-overlay {

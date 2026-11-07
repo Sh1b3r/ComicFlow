@@ -3612,13 +3612,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const domImages = Array.from(readerStrip.querySelectorAll('.reader-strip-image')).slice(0, 4);
-        const isCached = domImages.length > 0 && domImages.every(img => img.complete && img.naturalWidth > 0);
 
-        if (!isCached) {
-            const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
-            const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-            showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
-        }
+        const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
+        const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+        showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
 
         switchView('reader', false, null);
 
@@ -3646,55 +3643,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.scrollTo({ top: 0, behavior: 'instant' });
 
-        if (!isCached) {
-            let isDismissed = false;
-            const dismiss = () => {
-                if (isDismissed) return;
-                isDismissed = true;
+        let isDismissed = false;
+        const dismiss = () => {
+            if (isDismissed) return;
+            isDismissed = true;
+            requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        hidePreloader();
-                        setTimeout(() => {
-                            const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
-                            if (textEl) {
-                                const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-                                textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
-                            }
-                        }, 450);
-                    });
-                });
-            };
-
-            const maxTimer = setTimeout(dismiss, 2500);
-
-            if (domImages.length > 0) {
-                const decodePromises = domImages.map(img => {
-                    if (img.complete) {
-                        if (typeof img.decode === 'function') {
-                            return img.decode().catch(() => {});
+                    hidePreloader();
+                    setTimeout(() => {
+                        const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
+                        if (textEl) {
+                            const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+                            textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
                         }
-                        return Promise.resolve();
-                    }
-                    return new Promise(resolve => {
-                        const onFinish = () => {
-                            if (typeof img.decode === 'function') {
-                                img.decode().then(resolve).catch(resolve);
-                            } else {
-                                resolve();
-                            }
-                        };
-                        img.addEventListener('load', onFinish, { once: true });
-                        img.addEventListener('error', resolve, { once: true });
-                    });
+                    }, 450);
                 });
+            });
+        };
 
-                Promise.all(decodePromises).then(() => {
-                    clearTimeout(maxTimer);
-                    dismiss();
+        const maxTimer = setTimeout(dismiss, 3000);
+
+        if (domImages.length > 0) {
+            const decodePromises = domImages.map(img => {
+                if (img.complete) {
+                    if (typeof img.decode === 'function') {
+                        return img.decode().catch(() => {});
+                    }
+                    return Promise.resolve();
+                }
+                return new Promise(resolve => {
+                    const onFinish = () => {
+                        if (typeof img.decode === 'function') {
+                            img.decode().then(resolve).catch(resolve);
+                        } else {
+                            resolve();
+                        }
+                    };
+                    img.addEventListener('load', onFinish, { once: true });
+                    img.addEventListener('error', resolve, { once: true });
                 });
-            } else {
+            });
+
+            Promise.all(decodePromises).then(() => {
+                clearTimeout(maxTimer);
                 dismiss();
-            }
+            });
+        } else {
+            dismiss();
         }
 
         setTimeout(() => {
@@ -3997,14 +3992,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let preloaderShownTimestamp = Date.now();
-    let preloaderGraceTimer = null;
-    const MIN_PRELOADER_DURATION = 350;
+    const MIN_PRELOADER_DURATION = 950;
 
     function hidePreloader() {
-        if (preloaderGraceTimer) {
-            clearTimeout(preloaderGraceTimer);
-            preloaderGraceTimer = null;
-        }
         if (!preloaderOverlay) return;
         if (!preloaderOverlay.classList.contains('hidden-overlay')) {
             const elapsed = Date.now() - preloaderShownTimestamp;
@@ -4025,13 +4015,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (textEl && titleText) {
             textEl.innerHTML = titleText;
         }
-        if (preloaderGraceTimer) {
-            clearTimeout(preloaderGraceTimer);
-        }
-        preloaderGraceTimer = setTimeout(() => {
-            preloaderShownTimestamp = Date.now();
-            if (preloaderOverlay) preloaderOverlay.classList.remove('hidden-overlay');
-        }, 120);
+        preloaderShownTimestamp = Date.now();
+        preloaderOverlay.classList.remove('hidden-overlay');
     }
 
     if (preloaderOverlay) {
