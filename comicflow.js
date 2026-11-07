@@ -3524,7 +3524,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     pageEl.classList.add('comic-strip-image-page');
                     pageEl.innerHTML = `
                         <div class="strip-image-wrapper">
-                            <img src="${pageData.img}" alt="${comic.title} - ${I18N[currentAppLanguage].page} ${pIdx + 1}" class="reader-strip-image" loading="${pIdx < 5 ? 'eager' : 'lazy'}" decoding="async">
+                            <img src="${pageData.img}" alt="${comic.title} - ${I18N[currentAppLanguage].page} ${pIdx + 1}" class="reader-strip-image" loading="${pIdx < 5 ? 'eager' : 'lazy'}" decoding="${pIdx < 5 ? 'sync' : 'async'}">
                         </div>
                     `;
                 } else {
@@ -3640,42 +3640,58 @@ document.addEventListener('DOMContentLoaded', () => {
         const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
         showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
 
-        const initialImgList = chapter.pages.slice(0, 6).map(p => p.img).filter(Boolean);
-        let loaded = 0;
+        const domImages = Array.from(readerStrip.querySelectorAll('.reader-strip-image')).slice(0, 5);
         let isDismissed = false;
         const dismiss = () => {
             if (isDismissed) return;
             isDismissed = true;
-            hidePreloader();
-            setTimeout(() => {
-                const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
-                if (textEl) {
-                    const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-                    textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
-                }
-            }, 450);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    hidePreloader();
+                    setTimeout(() => {
+                        const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
+                        if (textEl) {
+                            const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+                            textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
+                        }
+                    }, 450);
+                });
+            });
         };
 
-        const maxTimer = setTimeout(dismiss, 1200);
+        const maxTimer = setTimeout(dismiss, 2500);
 
-        if (initialImgList.length > 0) {
-            initialImgList.forEach(src => {
-                const preloadImg = new Image();
-                preloadImg.onload = preloadImg.onerror = () => {
-                    loaded++;
-                    if (loaded >= Math.min(3, initialImgList.length)) {
-                        clearTimeout(maxTimer);
-                        dismiss();
+        if (domImages.length > 0) {
+            const decodePromises = domImages.map(img => {
+                if (img.complete) {
+                    if (typeof img.decode === 'function') {
+                        return img.decode().catch(() => {});
                     }
-                };
-                preloadImg.src = src;
+                    return Promise.resolve();
+                }
+                return new Promise(resolve => {
+                    const onFinish = () => {
+                        if (typeof img.decode === 'function') {
+                            img.decode().then(resolve).catch(resolve);
+                        } else {
+                            resolve();
+                        }
+                    };
+                    img.addEventListener('load', onFinish, { once: true });
+                    img.addEventListener('error', resolve, { once: true });
+                });
+            });
+
+            Promise.all(decodePromises).then(() => {
+                clearTimeout(maxTimer);
+                dismiss();
             });
         } else {
             dismiss();
         }
 
         setTimeout(() => {
-            const restImgs = chapter.pages.slice(6).map(p => p.img).filter(Boolean);
+            const restImgs = chapter.pages.slice(5).map(p => p.img).filter(Boolean);
             let pumpIdx = 0;
             const pump = () => {
                 if (pumpIdx >= restImgs.length) return;
@@ -3685,10 +3701,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pre = new Image();
                     pre.src = s;
                 });
-                setTimeout(pump, 250);
+                setTimeout(pump, 200);
             };
             pump();
-        }, 500);
+        }, 350);
     }
 
     if (readerChapterSelect) {
