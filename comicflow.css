@@ -2516,6 +2516,7 @@ body.reader-active .app-container {
     display: block !important;
 }
 
+#view-reader,
 .reader-page {
     width: 100%;
     min-height: 100vh;

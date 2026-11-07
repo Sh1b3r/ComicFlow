@@ -1178,121 +1178,130 @@ document.addEventListener('DOMContentLoaded', () => {
                     title: 'Випуск #1: Broken Dawn',
                     date: 'Березень 2013',
                     pages: [
-                        { img: 'images/ultron/webtoon/panel_001.jpg' },
-                        { img: 'images/ultron/webtoon/panel_002.jpg' },
-                        { img: 'images/ultron/webtoon/panel_003.jpg' },
-                        { img: 'images/ultron/webtoon/panel_004.jpg' },
-                        { img: 'images/ultron/webtoon/panel_005.jpg' },
-                        { img: 'images/ultron/webtoon/panel_006.jpg' },
-                        { img: 'images/ultron/webtoon/panel_007.jpg' },
-                        { img: 'images/ultron/webtoon/panel_008.jpg' },
-                        { img: 'images/ultron/webtoon/panel_009.jpg' },
-                        { img: 'images/ultron/webtoon/panel_010.jpg' },
-                        { img: 'images/ultron/webtoon/panel_011.jpg' },
-                        { img: 'images/ultron/webtoon/panel_012.jpg' },
-                        { img: 'images/ultron/webtoon/panel_013.jpg' },
-                        { img: 'images/ultron/webtoon/panel_014.jpg' },
-                        { img: 'images/ultron/webtoon/panel_015.jpg' },
-                        { img: 'images/ultron/webtoon/panel_016.jpg' },
-                        { img: 'images/ultron/webtoon/panel_017.jpg' },
-                        { img: 'images/ultron/webtoon/panel_018.jpg' },
-                        { img: 'images/ultron/webtoon/panel_019.jpg' },
-                        { img: 'images/ultron/webtoon/panel_020.jpg' },
-                        { img: 'images/ultron/webtoon/panel_021.jpg' },
-                        { img: 'images/ultron/webtoon/panel_022.jpg' },
-                        { img: 'images/ultron/webtoon/panel_023.jpg' },
-                        { img: 'images/ultron/webtoon/panel_024.jpg' },
-                        { img: 'images/ultron/webtoon/panel_025.jpg' },
-                        { img: 'images/ultron/webtoon/panel_026.jpg' },
-                        { img: 'images/ultron/webtoon/panel_027.jpg' },
-                        { img: 'images/ultron/webtoon/panel_028.jpg' },
-                        { img: 'images/ultron/webtoon/panel_029.jpg' },
-                        { img: 'images/ultron/webtoon/panel_030.jpg' },
-                        { img: 'images/ultron/webtoon/panel_031.jpg' },
-                        { img: 'images/ultron/webtoon/panel_032.jpg' },
-                        { img: 'images/ultron/webtoon/panel_033.jpg' },
-                        { img: 'images/ultron/webtoon/panel_034.jpg' },
-                        { img: 'images/ultron/webtoon/panel_035.jpg' },
-                        { img: 'images/ultron/webtoon/panel_036.jpg' },
-                        { img: 'images/ultron/webtoon/panel_037.jpg' },
-                        { img: 'images/ultron/webtoon/panel_038.jpg' },
-                        { img: 'images/ultron/webtoon/panel_039.jpg' },
-                        { img: 'images/ultron/webtoon/panel_040.jpg' },
-                        { img: 'images/ultron/webtoon/panel_041.jpg' },
-                        { img: 'images/ultron/webtoon/panel_042.jpg' },
-                        { img: 'images/ultron/webtoon/panel_043.jpg' },
-                        { img: 'images/ultron/webtoon/panel_044.jpg' },
-                        { img: 'images/ultron/webtoon/panel_045.jpg' },
-                        { img: 'images/ultron/webtoon/panel_046.jpg' },
-                        { img: 'images/ultron/webtoon/panel_047.jpg' },
-                        { img: 'images/ultron/webtoon/panel_048.jpg' },
-                        { img: 'images/ultron/webtoon/panel_049.jpg' },
-                        { img: 'images/ultron/webtoon/panel_050.jpg' },
-                        { img: 'images/ultron/webtoon/panel_051.jpg' },
-                        { img: 'images/ultron/webtoon/panel_052.jpg' },
-                        { img: 'images/ultron/webtoon/panel_053.jpg' },
-                        { img: 'images/ultron/webtoon/panel_054.jpg' },
-                        { img: 'images/ultron/webtoon/panel_055.jpg' },
-                        { img: 'images/ultron/webtoon/panel_056.jpg' },
-                        { img: 'images/ultron/webtoon/panel_057.jpg' },
-                        { img: 'images/ultron/webtoon/panel_058.jpg' },
-                        { img: 'images/ultron/webtoon/panel_059.jpg' },
-                        { img: 'images/ultron/webtoon/panel_060.jpg' },
-                        { img: 'images/ultron/webtoon/panel_061.jpg' },
-                        { img: 'images/ultron/webtoon/panel_062.jpg' },
-                        { img: 'images/ultron/webtoon/panel_063.jpg' },
-                        { img: 'images/ultron/webtoon/panel_064.jpg' },
-                        { img: 'images/ultron/webtoon/panel_065.jpg' },
-                        { img: 'images/ultron/webtoon/panel_066.jpg' },
-                        { img: 'images/ultron/webtoon/panel_067.jpg' },
-                        { img: 'images/ultron/webtoon/panel_068.jpg' },
-                        { img: 'images/ultron/webtoon/panel_069.jpg' },
-                        { img: 'images/ultron/webtoon/panel_070.jpg' },
-                        { img: 'images/ultron/webtoon/panel_071.jpg' },
-                        { img: 'images/ultron/webtoon/panel_072.jpg' },
-                        { img: 'images/ultron/webtoon/panel_073.jpg' },
-                        { img: 'images/ultron/webtoon/panel_074.jpg' },
-                        { img: 'images/ultron/webtoon/panel_075.jpg' },
-                        { img: 'images/ultron/webtoon/panel_076.jpg' },
-                        { img: 'images/ultron/webtoon/panel_077.jpg' },
-                        { img: 'images/ultron/webtoon/panel_078.jpg' },
-                        { img: 'images/ultron/webtoon/panel_079.jpg' },
-                        { img: 'images/ultron/webtoon/panel_080.jpg' },
-                        { img: 'images/ultron/webtoon/panel_081.jpg' },
-                        { img: 'images/ultron/webtoon/panel_082.jpg' },
-                        { img: 'images/ultron/webtoon/panel_083.jpg' },
-                        { img: 'images/ultron/webtoon/panel_084.jpg' },
-                        { img: 'images/ultron/webtoon/panel_085.jpg' },
-                        { img: 'images/ultron/webtoon/panel_086.jpg' },
-                        { img: 'images/ultron/webtoon/panel_087.jpg' },
-                        { img: 'images/ultron/webtoon/panel_088.jpg' },
-                        { img: 'images/ultron/webtoon/panel_089.jpg' },
-                        { img: 'images/ultron/webtoon/panel_090.jpg' },
-                        { img: 'images/ultron/webtoon/panel_091.jpg' },
-                        { img: 'images/ultron/webtoon/panel_092.jpg' },
-                        { img: 'images/ultron/webtoon/panel_093.jpg' },
-                        { img: 'images/ultron/webtoon/panel_094.jpg' },
-                        { img: 'images/ultron/webtoon/panel_095.jpg' },
-                        { img: 'images/ultron/webtoon/panel_096.jpg' },
-                        { img: 'images/ultron/webtoon/panel_097.jpg' },
-                        { img: 'images/ultron/webtoon/panel_098.jpg' },
-                        { img: 'images/ultron/webtoon/panel_099.jpg' },
-                        { img: 'images/ultron/webtoon/panel_100.jpg' },
-                        { img: 'images/ultron/webtoon/panel_101.jpg' },
-                        { img: 'images/ultron/webtoon/panel_102.jpg' },
-                        { img: 'images/ultron/webtoon/panel_103.jpg' },
-                        { img: 'images/ultron/webtoon/panel_104.jpg' },
-                        { img: 'images/ultron/webtoon/panel_105.jpg' },
-                        { img: 'images/ultron/webtoon/panel_106.jpg' },
-                        { img: 'images/ultron/webtoon/panel_107.jpg' },
-                        { img: 'images/ultron/webtoon/panel_108.jpg' },
-                        { img: 'images/ultron/webtoon/panel_109.jpg' },
-                        { img: 'images/ultron/webtoon/panel_110.jpg' },
-                        { img: 'images/ultron/webtoon/panel_111.jpg' },
-                        { img: 'images/ultron/webtoon/panel_112.jpg' },
-                        { img: 'images/ultron/webtoon/panel_113.jpg' },
-                        { img: 'images/ultron/webtoon/panel_114.jpg' }
-                    ]
+                            { img: 'images/ultron/webtoon/panel_001.jpg' },
+                            { img: 'images/ultron/webtoon/panel_002.jpg' },
+                            { img: 'images/ultron/webtoon/panel_003.jpg' },
+                            { img: 'images/ultron/webtoon/panel_004.jpg' },
+                            { img: 'images/ultron/webtoon/panel_005.jpg' },
+                            { img: 'images/ultron/webtoon/panel_006.jpg' },
+                            { img: 'images/ultron/webtoon/panel_007.jpg' },
+                            { img: 'images/ultron/webtoon/panel_008.jpg' },
+                            { img: 'images/ultron/webtoon/panel_009.jpg' },
+                            { img: 'images/ultron/webtoon/panel_010.jpg' },
+                            { img: 'images/ultron/webtoon/panel_011.jpg' },
+                            { img: 'images/ultron/webtoon/panel_012.jpg' },
+                            { img: 'images/ultron/webtoon/panel_013.jpg' },
+                            { img: 'images/ultron/webtoon/panel_014.jpg' },
+                            { img: 'images/ultron/webtoon/panel_015.jpg' },
+                            { img: 'images/ultron/webtoon/panel_016.jpg' },
+                            { img: 'images/ultron/webtoon/panel_017.jpg' },
+                            { img: 'images/ultron/webtoon/panel_018.jpg' },
+                            { img: 'images/ultron/webtoon/panel_019.jpg' },
+                            { img: 'images/ultron/webtoon/panel_020.jpg' },
+                            { img: 'images/ultron/webtoon/panel_021.jpg' },
+                            { img: 'images/ultron/webtoon/panel_022.jpg' },
+                            { img: 'images/ultron/webtoon/panel_023.jpg' },
+                            { img: 'images/ultron/webtoon/panel_024.jpg' },
+                            { img: 'images/ultron/webtoon/panel_025.jpg' },
+                            { img: 'images/ultron/webtoon/panel_026.jpg' },
+                            { img: 'images/ultron/webtoon/panel_027.jpg' },
+                            { img: 'images/ultron/webtoon/panel_028.jpg' },
+                            { img: 'images/ultron/webtoon/panel_029.jpg' },
+                            { img: 'images/ultron/webtoon/panel_030.jpg' },
+                            { img: 'images/ultron/webtoon/panel_031.jpg' },
+                            { img: 'images/ultron/webtoon/panel_032.jpg' },
+                            { img: 'images/ultron/webtoon/panel_033.jpg' },
+                            { img: 'images/ultron/webtoon/panel_034.jpg' },
+                            { img: 'images/ultron/webtoon/panel_035.jpg' },
+                            { img: 'images/ultron/webtoon/panel_036.jpg' },
+                            { img: 'images/ultron/webtoon/panel_037.jpg' },
+                            { img: 'images/ultron/webtoon/panel_038.jpg' },
+                            { img: 'images/ultron/webtoon/panel_039.jpg' },
+                            { img: 'images/ultron/webtoon/panel_040.jpg' },
+                            { img: 'images/ultron/webtoon/panel_041.jpg' },
+                            { img: 'images/ultron/webtoon/panel_042.jpg' },
+                            { img: 'images/ultron/webtoon/panel_043.jpg' },
+                            { img: 'images/ultron/webtoon/panel_044.jpg' },
+                            { img: 'images/ultron/webtoon/panel_045.jpg' },
+                            { img: 'images/ultron/webtoon/panel_046.jpg' },
+                            { img: 'images/ultron/webtoon/panel_047.jpg' },
+                            { img: 'images/ultron/webtoon/panel_048.jpg' },
+                            { img: 'images/ultron/webtoon/panel_049.jpg' },
+                            { img: 'images/ultron/webtoon/panel_050.jpg' },
+                            { img: 'images/ultron/webtoon/panel_051.jpg' },
+                            { img: 'images/ultron/webtoon/panel_052.jpg' },
+                            { img: 'images/ultron/webtoon/panel_053.jpg' },
+                            { img: 'images/ultron/webtoon/panel_054.jpg' },
+                            { img: 'images/ultron/webtoon/panel_055.jpg' },
+                            { img: 'images/ultron/webtoon/panel_056.jpg' },
+                            { img: 'images/ultron/webtoon/panel_057.jpg' },
+                            { img: 'images/ultron/webtoon/panel_058.jpg' },
+                            { img: 'images/ultron/webtoon/panel_059.jpg' },
+                            { img: 'images/ultron/webtoon/panel_060.jpg' },
+                            { img: 'images/ultron/webtoon/panel_061.jpg' },
+                            { img: 'images/ultron/webtoon/panel_062.jpg' },
+                            { img: 'images/ultron/webtoon/panel_063.jpg' },
+                            { img: 'images/ultron/webtoon/panel_064.jpg' },
+                            { img: 'images/ultron/webtoon/panel_065.jpg' },
+                            { img: 'images/ultron/webtoon/panel_066.jpg' },
+                            { img: 'images/ultron/webtoon/panel_067.jpg' },
+                            { img: 'images/ultron/webtoon/panel_068.jpg' },
+                            { img: 'images/ultron/webtoon/panel_069.jpg' },
+                            { img: 'images/ultron/webtoon/panel_070.jpg' },
+                            { img: 'images/ultron/webtoon/panel_071.jpg' },
+                            { img: 'images/ultron/webtoon/panel_072.jpg' },
+                            { img: 'images/ultron/webtoon/panel_073.jpg' },
+                            { img: 'images/ultron/webtoon/panel_074.jpg' },
+                            { img: 'images/ultron/webtoon/panel_075.jpg' },
+                            { img: 'images/ultron/webtoon/panel_076.jpg' },
+                            { img: 'images/ultron/webtoon/panel_077.jpg' },
+                            { img: 'images/ultron/webtoon/panel_078.jpg' },
+                            { img: 'images/ultron/webtoon/panel_079.jpg' },
+                            { img: 'images/ultron/webtoon/panel_080.jpg' },
+                            { img: 'images/ultron/webtoon/panel_081.jpg' },
+                            { img: 'images/ultron/webtoon/panel_082.jpg' },
+                            { img: 'images/ultron/webtoon/panel_083.jpg' },
+                            { img: 'images/ultron/webtoon/panel_084.jpg' },
+                            { img: 'images/ultron/webtoon/panel_085.jpg' },
+                            { img: 'images/ultron/webtoon/panel_086.jpg' },
+                            { img: 'images/ultron/webtoon/panel_087.jpg' },
+                            { img: 'images/ultron/webtoon/panel_088.jpg' },
+                            { img: 'images/ultron/webtoon/panel_089.jpg' },
+                            { img: 'images/ultron/webtoon/panel_090.jpg' },
+                            { img: 'images/ultron/webtoon/panel_091.jpg' },
+                            { img: 'images/ultron/webtoon/panel_092.jpg' },
+                            { img: 'images/ultron/webtoon/panel_093.jpg' },
+                            { img: 'images/ultron/webtoon/panel_094.jpg' },
+                            { img: 'images/ultron/webtoon/panel_095.jpg' },
+                            { img: 'images/ultron/webtoon/panel_096.jpg' },
+                            { img: 'images/ultron/webtoon/panel_097.jpg' },
+                            { img: 'images/ultron/webtoon/panel_098.jpg' },
+                            { img: 'images/ultron/webtoon/panel_099.jpg' },
+                            { img: 'images/ultron/webtoon/panel_100.jpg' },
+                            { img: 'images/ultron/webtoon/panel_101.jpg' },
+                            { img: 'images/ultron/webtoon/panel_102.jpg' },
+                            { img: 'images/ultron/webtoon/panel_103.jpg' },
+                            { img: 'images/ultron/webtoon/panel_104.jpg' },
+                            { img: 'images/ultron/webtoon/panel_105.jpg' },
+                            { img: 'images/ultron/webtoon/panel_106.jpg' },
+                            { img: 'images/ultron/webtoon/panel_107.jpg' },
+                            { img: 'images/ultron/webtoon/panel_108.jpg' },
+                            { img: 'images/ultron/webtoon/panel_109.jpg' },
+                            { img: 'images/ultron/webtoon/panel_110.jpg' },
+                            { img: 'images/ultron/webtoon/panel_111.jpg' },
+                            { img: 'images/ultron/webtoon/panel_112.jpg' },
+                            { img: 'images/ultron/webtoon/panel_113.jpg' },
+                            { img: 'images/ultron/webtoon/panel_114.jpg' },
+                            { img: 'images/ultron/webtoon/panel_115.jpg' },
+                            { img: 'images/ultron/webtoon/panel_116.jpg' },
+                            { img: 'images/ultron/webtoon/panel_117.jpg' },
+                            { img: 'images/ultron/webtoon/panel_118.jpg' },
+                            { img: 'images/ultron/webtoon/panel_119.jpg' },
+                            { img: 'images/ultron/webtoon/panel_120.jpg' },
+                            { img: 'images/ultron/webtoon/panel_121.jpg' },
+                            { img: 'images/ultron/webtoon/panel_122.jpg' },
+                            { img: 'images/ultron/webtoon/panel_123.jpg' }
+                        ]
                 },
                 {
                     num: 2,
@@ -3610,7 +3619,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        switchView('reader', false, 'push');
+        const domImages = Array.from(readerStrip.querySelectorAll('.reader-strip-image')).slice(0, 4);
+        const isCached = domImages.length > 0 && domImages.every(img => img.complete && img.naturalWidth > 0);
+
+        if (!isCached) {
+            const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
+            const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+            showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
+        }
+
+        switchView('reader', false, null);
 
         currentReaderPageIndex = 0;
         setReaderMode(currentReaderMode);
@@ -3636,58 +3654,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.scrollTo({ top: 0, behavior: 'instant' });
 
-        const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
-        const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-        showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`, true);
-
-        const domImages = Array.from(readerStrip.querySelectorAll('.reader-strip-image')).slice(0, 5);
-        let isDismissed = false;
-        const dismiss = () => {
-            if (isDismissed) return;
-            isDismissed = true;
-            requestAnimationFrame(() => {
+        if (!isCached) {
+            let isDismissed = false;
+            const dismiss = () => {
+                if (isDismissed) return;
+                isDismissed = true;
                 requestAnimationFrame(() => {
-                    hidePreloader();
-                    setTimeout(() => {
-                        const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
-                        if (textEl) {
-                            const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
-                            textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
-                        }
-                    }, 450);
+                    requestAnimationFrame(() => {
+                        hidePreloader();
+                        setTimeout(() => {
+                            const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
+                            if (textEl) {
+                                const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+                                textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
+                            }
+                        }, 450);
+                    });
                 });
-            });
-        };
+            };
 
-        const maxTimer = setTimeout(dismiss, 2500);
+            const maxTimer = setTimeout(dismiss, 2500);
 
-        if (domImages.length > 0) {
-            const decodePromises = domImages.map(img => {
-                if (img.complete) {
-                    if (typeof img.decode === 'function') {
-                        return img.decode().catch(() => {});
-                    }
-                    return Promise.resolve();
-                }
-                return new Promise(resolve => {
-                    const onFinish = () => {
+            if (domImages.length > 0) {
+                const decodePromises = domImages.map(img => {
+                    if (img.complete) {
                         if (typeof img.decode === 'function') {
-                            img.decode().then(resolve).catch(resolve);
-                        } else {
-                            resolve();
+                            return img.decode().catch(() => {});
                         }
-                    };
-                    img.addEventListener('load', onFinish, { once: true });
-                    img.addEventListener('error', resolve, { once: true });
+                        return Promise.resolve();
+                    }
+                    return new Promise(resolve => {
+                        const onFinish = () => {
+                            if (typeof img.decode === 'function') {
+                                img.decode().then(resolve).catch(resolve);
+                            } else {
+                                resolve();
+                            }
+                        };
+                        img.addEventListener('load', onFinish, { once: true });
+                        img.addEventListener('error', resolve, { once: true });
+                    });
                 });
-            });
 
-            Promise.all(decodePromises).then(() => {
-                clearTimeout(maxTimer);
+                Promise.all(decodePromises).then(() => {
+                    clearTimeout(maxTimer);
+                    dismiss();
+                });
+            } else {
                 dismiss();
-            });
-        } else {
-            dismiss();
+            }
         }
 
         setTimeout(() => {
@@ -3921,18 +3936,11 @@ document.addEventListener('DOMContentLoaded', () => {
         handleHashRoute();
     }
 
-    let preloaderShowTimer = null;
     let preloaderShownTimestamp = Date.now();
-    const MIN_PRELOADER_DURATION = 500;
-    const PRELOADER_GRACE_DELAY = 150;
+    const MIN_PRELOADER_DURATION = 400;
 
     function hidePreloader() {
         if (!preloaderOverlay) return;
-        if (preloaderShowTimer) {
-            clearTimeout(preloaderShowTimer);
-            preloaderShowTimer = null;
-            return;
-        }
         if (!preloaderOverlay.classList.contains('hidden-overlay')) {
             const elapsed = Date.now() - preloaderShownTimestamp;
             const remaining = Math.max(0, MIN_PRELOADER_DURATION - elapsed);
@@ -3946,26 +3954,14 @@ document.addEventListener('DOMContentLoaded', () => {
         preloaderOverlay.classList.add('hidden-overlay');
     }
 
-    function showPreloader(titleText, delayed = false) {
+    function showPreloader(titleText) {
         if (!preloaderOverlay) return;
         const textEl = preloaderOverlay.querySelector('.preloader-text');
         if (textEl && titleText) {
             textEl.innerHTML = titleText;
         }
-        if (preloaderShowTimer) {
-            clearTimeout(preloaderShowTimer);
-            preloaderShowTimer = null;
-        }
-        if (delayed) {
-            preloaderShowTimer = setTimeout(() => {
-                preloaderShowTimer = null;
-                preloaderShownTimestamp = Date.now();
-                preloaderOverlay.classList.remove('hidden-overlay');
-            }, PRELOADER_GRACE_DELAY);
-        } else {
-            preloaderShownTimestamp = Date.now();
-            preloaderOverlay.classList.remove('hidden-overlay');
-        }
+        preloaderShownTimestamp = Date.now();
+        preloaderOverlay.classList.remove('hidden-overlay');
     }
 
     if (preloaderOverlay) {
