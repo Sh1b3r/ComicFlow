@@ -2850,6 +2850,18 @@ body.reader-mode-page .reader-page-nav-bar {
     user-select: none;
     -webkit-user-drag: none;
     background-color: #08090d;
+    transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1);
+    transform-origin: center center;
+    cursor: zoom-in;
+    touch-action: manipulation;
+}
+
+.reader-strip-image.is-zoomed {
+    transform: scale(2.2);
+    z-index: 60;
+    position: relative;
+    cursor: zoom-out;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
 }
 
 .strip-page-badge {

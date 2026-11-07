@@ -1292,15 +1292,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             { img: 'images/ultron/webtoon/panel_112.jpg' },
                             { img: 'images/ultron/webtoon/panel_113.jpg' },
                             { img: 'images/ultron/webtoon/panel_114.jpg' },
-                            { img: 'images/ultron/webtoon/panel_115.jpg' },
-                            { img: 'images/ultron/webtoon/panel_116.jpg' },
-                            { img: 'images/ultron/webtoon/panel_117.jpg' },
-                            { img: 'images/ultron/webtoon/panel_118.jpg' },
-                            { img: 'images/ultron/webtoon/panel_119.jpg' },
-                            { img: 'images/ultron/webtoon/panel_120.jpg' },
-                            { img: 'images/ultron/webtoon/panel_121.jpg' },
-                            { img: 'images/ultron/webtoon/panel_122.jpg' },
-                            { img: 'images/ultron/webtoon/panel_123.jpg' }
+                            { img: 'images/ultron/webtoon/panel_115.jpg' }
                         ]
                 },
                 {
@@ -3753,30 +3745,98 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let touchStartX = 0;
     let touchStartY = 0;
+    let activeZoomedImg = null;
+    let lastTapTime = 0;
+    let lastTapX = 0;
+    let lastTapY = 0;
+
+    function resetActiveZoom() {
+        if (activeZoomedImg) {
+            activeZoomedImg.classList.remove('is-zoomed');
+            activeZoomedImg.style.transformOrigin = '';
+            activeZoomedImg = null;
+        }
+    }
+
+    function toggleImageZoom(img, clientX, clientY) {
+        if (img.classList.contains('is-zoomed')) {
+            resetActiveZoom();
+            return;
+        }
+        resetActiveZoom();
+        const rect = img.getBoundingClientRect();
+        const xPercent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+        const yPercent = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+        img.style.transformOrigin = `${xPercent.toFixed(1)}% ${yPercent.toFixed(1)}%`;
+        img.classList.add('is-zoomed');
+        activeZoomedImg = img;
+    }
+
     if (readerStrip) {
         readerStrip.addEventListener('touchstart', (e) => {
-            if (currentReaderMode !== 'page') return;
-            const touch = e.changedTouches[0];
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
+            if (currentReaderMode === 'page') {
+                const touch = e.changedTouches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+            }
         }, { passive: true });
 
         readerStrip.addEventListener('touchend', (e) => {
-            if (currentReaderMode !== 'page') return;
             const touch = e.changedTouches[0];
-            const diffX = touch.clientX - touchStartX;
-            const diffY = touch.clientY - touchStartY;
-            if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-                if (diffX < 0) {
-                    flipReaderPage(1);
-                } else {
-                    flipReaderPage(-1);
+            const img = e.target.closest('.reader-strip-image');
+
+            if (currentReaderMode === 'page') {
+                const diffX = touch.clientX - touchStartX;
+                const diffY = touch.clientY - touchStartY;
+                if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                    if (diffX < 0) {
+                        flipReaderPage(1);
+                    } else {
+                        flipReaderPage(-1);
+                    }
+                    return;
                 }
             }
-        }, { passive: true });
+
+            if (img) {
+                const now = Date.now();
+                const dist = Math.hypot(touch.clientX - lastTapX, touch.clientY - lastTapY);
+                if (now - lastTapTime < 320 && dist < 35) {
+                    e.preventDefault();
+                    toggleImageZoom(img, touch.clientX, touch.clientY);
+                    lastTapTime = 0;
+                } else {
+                    if (activeZoomedImg && activeZoomedImg === img) {
+                        resetActiveZoom();
+                    }
+                    lastTapTime = now;
+                    lastTapX = touch.clientX;
+                    lastTapY = touch.clientY;
+                }
+            } else if (activeZoomedImg) {
+                resetActiveZoom();
+            }
+        }, { passive: false });
+
+        readerStrip.addEventListener('dblclick', (e) => {
+            const img = e.target.closest('.reader-strip-image');
+            if (!img) return;
+            e.preventDefault();
+            toggleImageZoom(img, e.clientX, e.clientY);
+        });
+
+        readerStrip.addEventListener('click', (e) => {
+            if (activeZoomedImg && !e.target.closest('.reader-strip-image')) {
+                resetActiveZoom();
+            }
+        });
     }
 
     window.addEventListener('scroll', () => {
+        if (activeZoomedImg) {
+            resetActiveZoom();
+        }
+
         if (currentActiveView !== 'reader' || currentReaderMode === 'page') return;
 
         const scrollY = window.scrollY;
@@ -3937,9 +3997,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let preloaderShownTimestamp = Date.now();
-    const MIN_PRELOADER_DURATION = 400;
+    let preloaderGraceTimer = null;
+    const MIN_PRELOADER_DURATION = 350;
 
     function hidePreloader() {
+        if (preloaderGraceTimer) {
+            clearTimeout(preloaderGraceTimer);
+            preloaderGraceTimer = null;
+        }
         if (!preloaderOverlay) return;
         if (!preloaderOverlay.classList.contains('hidden-overlay')) {
             const elapsed = Date.now() - preloaderShownTimestamp;
@@ -3960,8 +4025,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (textEl && titleText) {
             textEl.innerHTML = titleText;
         }
-        preloaderShownTimestamp = Date.now();
-        preloaderOverlay.classList.remove('hidden-overlay');
+        if (preloaderGraceTimer) {
+            clearTimeout(preloaderGraceTimer);
+        }
+        preloaderGraceTimer = setTimeout(() => {
+            preloaderShownTimestamp = Date.now();
+            if (preloaderOverlay) preloaderOverlay.classList.remove('hidden-overlay');
+        }, 120);
     }
 
     if (preloaderOverlay) {
