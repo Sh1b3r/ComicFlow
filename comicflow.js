@@ -3636,68 +3636,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.scrollTo({ top: 0, behavior: 'instant' });
 
-        const readerPreloader = document.getElementById('reader-preloader');
-        const readerPreloaderTitle = document.getElementById('reader-preloader-title');
-        const readerPreloaderSub = document.getElementById('reader-preloader-sub');
-        const readerPreloaderBar = document.getElementById('reader-preloader-bar');
+        const comicName = (currentAppLanguage === 'en' ? comic.title_en : (currentAppLanguage === 'ru' ? (comic.title_ru || comic.title) : comic.title)) || comic.title;
+        const loadingWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+        showPreloader(`${loadingWord} <span class="preloader-comic">${comicName}</span>`);
 
-        if (readerPreloader) {
-            if (readerPreloaderTitle) readerPreloaderTitle.textContent = I18N[currentAppLanguage].readerLoading || 'Завантаження випуску...';
-            if (readerPreloaderSub) readerPreloaderSub.textContent = `${titleText} • ${chTitle}`;
-            if (readerPreloaderBar) readerPreloaderBar.style.width = '12%';
-            readerPreloader.classList.add('active');
-
-            const initialImgList = chapter.pages.slice(0, 8).map(p => p.img).filter(Boolean);
-            if (initialImgList.length > 0) {
-                let loaded = 0;
-                let isDismissed = false;
-                const dismiss = () => {
-                    if (isDismissed) return;
-                    isDismissed = true;
-                    if (readerPreloaderBar) readerPreloaderBar.style.width = '100%';
-                    setTimeout(() => {
-                        readerPreloader.classList.remove('active');
-                    }, 140);
-                };
-
-                const maxTimer = setTimeout(dismiss, 1100);
-
-                initialImgList.forEach(src => {
-                    const preloadImg = new Image();
-                    preloadImg.onload = preloadImg.onerror = () => {
-                        loaded++;
-                        if (readerPreloaderBar) {
-                            readerPreloaderBar.style.width = `${Math.min(95, Math.round(15 + (loaded / initialImgList.length) * 80))}%`;
-                        }
-                        if (loaded >= Math.min(3, initialImgList.length)) {
-                            clearTimeout(maxTimer);
-                            dismiss();
-                        }
-                    };
-                    preloadImg.src = src;
-                });
-            } else {
-                setTimeout(() => {
-                    readerPreloader.classList.remove('active');
-                }, 200);
-            }
-
+        const initialImgList = chapter.pages.slice(0, 6).map(p => p.img).filter(Boolean);
+        let loaded = 0;
+        let isDismissed = false;
+        const dismiss = () => {
+            if (isDismissed) return;
+            isDismissed = true;
+            hidePreloader();
             setTimeout(() => {
-                const restImgs = chapter.pages.slice(8).map(p => p.img).filter(Boolean);
-                let pumpIdx = 0;
-                const pump = () => {
-                    if (pumpIdx >= restImgs.length) return;
-                    const chunk = restImgs.slice(pumpIdx, pumpIdx + 4);
-                    pumpIdx += 4;
-                    chunk.forEach(s => {
-                        const pre = new Image();
-                        pre.src = s;
-                    });
-                    setTimeout(pump, 250);
+                const textEl = preloaderOverlay ? preloaderOverlay.querySelector('.preloader-text') : null;
+                if (textEl) {
+                    const defaultWord = currentAppLanguage === 'en' ? 'Loading' : (currentAppLanguage === 'ru' ? 'Загрузка' : 'Завантаження');
+                    textEl.innerHTML = `${defaultWord} <span class="preloader-comic">Comic</span><span class="preloader-flow">Flow</span>`;
+                }
+            }, 450);
+        };
+
+        const maxTimer = setTimeout(dismiss, 1200);
+
+        if (initialImgList.length > 0) {
+            initialImgList.forEach(src => {
+                const preloadImg = new Image();
+                preloadImg.onload = preloadImg.onerror = () => {
+                    loaded++;
+                    if (loaded >= Math.min(3, initialImgList.length)) {
+                        clearTimeout(maxTimer);
+                        dismiss();
+                    }
                 };
-                pump();
-            }, 750);
+                preloadImg.src = src;
+            });
+        } else {
+            dismiss();
         }
+
+        setTimeout(() => {
+            const restImgs = chapter.pages.slice(6).map(p => p.img).filter(Boolean);
+            let pumpIdx = 0;
+            const pump = () => {
+                if (pumpIdx >= restImgs.length) return;
+                const chunk = restImgs.slice(pumpIdx, pumpIdx + 4);
+                pumpIdx += 4;
+                chunk.forEach(s => {
+                    const pre = new Image();
+                    pre.src = s;
+                });
+                setTimeout(pump, 250);
+            };
+            pump();
+        }, 500);
     }
 
     if (readerChapterSelect) {
@@ -3917,16 +3908,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function hidePreloader() {
         if (!preloaderOverlay) return;
         preloaderOverlay.classList.add('hidden-overlay');
-        setTimeout(() => {
-            if (preloaderOverlay && preloaderOverlay.parentNode) {
-                preloaderOverlay.parentNode.removeChild(preloaderOverlay);
-            }
-        }, 500);
+    }
+
+    function showPreloader(titleText) {
+        if (!preloaderOverlay) return;
+        const textEl = preloaderOverlay.querySelector('.preloader-text');
+        if (textEl && titleText) {
+            textEl.innerHTML = titleText;
+        }
+        preloaderOverlay.classList.remove('hidden-overlay');
     }
 
     if (preloaderOverlay) {
         preloaderOverlay.addEventListener('click', hidePreloader);
     }
 
+    window.addEventListener('load', () => {
+        setTimeout(hidePreloader, 600);
+    });
     setTimeout(hidePreloader, 1250);
 });
