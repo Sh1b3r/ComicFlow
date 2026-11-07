@@ -2603,8 +2603,44 @@ body.reader-active .app-container {
 .reader-navbar-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-shrink: 0;
+}
+
+.reader-zoom-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.reader-zoom-toggle-btn:hover,
+.reader-zoom-toggle-btn.active {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.reader-strip-container.is-magnified {
+    width: 135% !important;
+    max-width: 135% !important;
+}
+
+@media (max-width: 768px) {
+    .reader-strip-container.is-magnified {
+        width: 140% !important;
+        max-width: 140% !important;
+        margin-left: -20%;
+    }
 }
 
 .reader-chapter-select {

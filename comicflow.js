@@ -3746,6 +3746,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastTapX = 0;
     let lastTapY = 0;
 
+    let zoomOriginScrollY = 0;
+
     function resetActiveZoom() {
         if (activeZoomedImg) {
             activeZoomedImg.classList.remove('is-zoomed');
@@ -3766,6 +3768,16 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.transformOrigin = `${xPercent.toFixed(1)}% ${yPercent.toFixed(1)}%`;
         img.classList.add('is-zoomed');
         activeZoomedImg = img;
+        zoomOriginScrollY = window.scrollY;
+    }
+
+    const readerZoomToggleBtn = document.getElementById('reader-zoom-toggle-btn');
+    if (readerZoomToggleBtn && readerStrip) {
+        readerZoomToggleBtn.addEventListener('click', () => {
+            readerStrip.classList.toggle('is-magnified');
+            const isMag = readerStrip.classList.contains('is-magnified');
+            readerZoomToggleBtn.classList.toggle('active', isMag);
+        });
     }
 
     if (readerStrip) {
@@ -3795,16 +3807,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (img) {
+                if (activeZoomedImg && activeZoomedImg === img) {
+                    resetActiveZoom();
+                    lastTapTime = 0;
+                    return;
+                }
                 const now = Date.now();
                 const dist = Math.hypot(touch.clientX - lastTapX, touch.clientY - lastTapY);
-                if (now - lastTapTime < 320 && dist < 35) {
+                if (now - lastTapTime < 450 && dist < 65) {
                     e.preventDefault();
                     toggleImageZoom(img, touch.clientX, touch.clientY);
                     lastTapTime = 0;
                 } else {
-                    if (activeZoomedImg && activeZoomedImg === img) {
-                        resetActiveZoom();
-                    }
                     lastTapTime = now;
                     lastTapX = touch.clientX;
                     lastTapY = touch.clientY;
@@ -3829,7 +3843,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', () => {
-        if (activeZoomedImg) {
+        if (activeZoomedImg && Math.abs(window.scrollY - zoomOriginScrollY) > 220) {
             resetActiveZoom();
         }
 
