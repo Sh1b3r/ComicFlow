@@ -564,8 +564,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         'secret-wars': [
             'secret wars', 'secret wars 2015', 'doctor doom', 'doom', 'battleworld', 'hickman', 'ribic', 'reed richards',
-            'тайные войны', 'секретные войны', 'доктор дум', 'дум', 'мир битв', 'хикман', 'рибич', 'рид ричардс',
-            'таємні війни', 'доктор дум', 'дум', 'світ битв', 'гікман', 'рибич', 'рід річардс'
+            'секретные войны', 'секретные', 'тайные войны', 'тайные', 'доктор дум', 'дум', 'мир битв', 'хикман', 'рибич', 'рид ричардс',
+            'секретні війни', 'секретні', 'таємні війни', 'таємні', 'доктор дум', 'дум', 'світ битв', 'гікман', 'рибич', 'рід річардс'
         ],
         'spider-man': [
             'spider-man', 'spiderman', 'ultimate spider-man', 'peter parker', 'miles morales', 'bendis', 'bagley',
@@ -728,8 +728,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const COMIC_I18N = {
         'secret-wars': {
-            title: { "ua": "Таємні Війни", "en": "Secret Wars", "ru": "Тайные Войны" },
-            fullTitle: { "ua": "Таємні Війни (2015)", "en": "Secret Wars (2015)", "ru": "Тайные Войны (2015)" },
+            title: { "ua": "Секретні Війни", "en": "Secret Wars", "ru": "Секретные Войны" },
+            fullTitle: { "ua": "Секретні Війни (2015)", "en": "Secret Wars (2015)", "ru": "Секретные Войны (2015)" },
             author: { ua: 'Джонатан Гікман', en: 'Jonathan Hickman', ru: 'Джонатан Хикман' },
             artist: { ua: 'Есад Рибич', en: 'Esad Ribic', ru: 'Эсад Рибич' },
             origTitle: { ua: 'Marvel Comics • Оригінал: Secret Wars #1-9', en: 'Marvel Comics • Original: Secret Wars #1-9', ru: 'Marvel Comics • Оригинал: Secret Wars #1-9' },
