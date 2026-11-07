@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
             synopsisHeading: 'Опис та синопсис',
             chaptersHeading: 'Список випусків та розділів',
             readerBack: 'До опису',
+            readerLoading: 'Завантаження випуску...',
             settingsTitle: 'Налаштування',
             settingsSub: 'Параметри інтерфейсу, навігації, теми та читанки',
             btnCancel: 'Скасувати',
@@ -378,6 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
             synopsisHeading: 'Synopsis & Plot',
             chaptersHeading: 'Issues & Chapters List',
             readerBack: 'To Details',
+            readerLoading: 'Loading Issue...',
             settingsTitle: 'Settings',
             settingsSub: 'Interface preferences, navigation, themes and reader options',
             btnCancel: 'Cancel',
@@ -498,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
             synopsisHeading: 'Описание и синопсис',
             chaptersHeading: 'Список выпусков и глав',
             readerBack: 'К описанию',
+            readerLoading: 'Загрузка выпуска...',
             settingsTitle: 'Настройки',
             settingsSub: 'Параметры интерфейса, навигации, темы и читалки',
             btnCancel: 'Отмена',
@@ -1287,7 +1290,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         { img: 'images/ultron/webtoon/panel_110.jpg' },
                         { img: 'images/ultron/webtoon/panel_111.jpg' },
                         { img: 'images/ultron/webtoon/panel_112.jpg' },
-                        { img: 'images/ultron/webtoon/panel_113.jpg' }
+                        { img: 'images/ultron/webtoon/panel_113.jpg' },
+                        { img: 'images/ultron/webtoon/panel_114.jpg' }
                     ]
                 },
                 {
@@ -3520,7 +3524,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     pageEl.classList.add('comic-strip-image-page');
                     pageEl.innerHTML = `
                         <div class="strip-image-wrapper">
-                            <img src="${pageData.img}" alt="${comic.title} - ${I18N[currentAppLanguage].page} ${pIdx + 1}" class="reader-strip-image" loading="${pIdx < 2 ? 'eager' : 'lazy'}">
+                            <img src="${pageData.img}" alt="${comic.title} - ${I18N[currentAppLanguage].page} ${pIdx + 1}" class="reader-strip-image" loading="${pIdx < 5 ? 'eager' : 'lazy'}" decoding="async">
                         </div>
                     `;
                 } else {
@@ -3631,6 +3635,69 @@ document.addEventListener('DOMContentLoaded', () => {
         lastReaderScrollY = 0;
 
         window.scrollTo({ top: 0, behavior: 'instant' });
+
+        const readerPreloader = document.getElementById('reader-preloader');
+        const readerPreloaderTitle = document.getElementById('reader-preloader-title');
+        const readerPreloaderSub = document.getElementById('reader-preloader-sub');
+        const readerPreloaderBar = document.getElementById('reader-preloader-bar');
+
+        if (readerPreloader) {
+            if (readerPreloaderTitle) readerPreloaderTitle.textContent = I18N[currentAppLanguage].readerLoading || 'Завантаження випуску...';
+            if (readerPreloaderSub) readerPreloaderSub.textContent = `${titleText} • ${chTitle}`;
+            if (readerPreloaderBar) readerPreloaderBar.style.width = '12%';
+            readerPreloader.classList.add('active');
+
+            const initialImgList = chapter.pages.slice(0, 8).map(p => p.img).filter(Boolean);
+            if (initialImgList.length > 0) {
+                let loaded = 0;
+                let isDismissed = false;
+                const dismiss = () => {
+                    if (isDismissed) return;
+                    isDismissed = true;
+                    if (readerPreloaderBar) readerPreloaderBar.style.width = '100%';
+                    setTimeout(() => {
+                        readerPreloader.classList.remove('active');
+                    }, 140);
+                };
+
+                const maxTimer = setTimeout(dismiss, 1100);
+
+                initialImgList.forEach(src => {
+                    const preloadImg = new Image();
+                    preloadImg.onload = preloadImg.onerror = () => {
+                        loaded++;
+                        if (readerPreloaderBar) {
+                            readerPreloaderBar.style.width = `${Math.min(95, Math.round(15 + (loaded / initialImgList.length) * 80))}%`;
+                        }
+                        if (loaded >= Math.min(3, initialImgList.length)) {
+                            clearTimeout(maxTimer);
+                            dismiss();
+                        }
+                    };
+                    preloadImg.src = src;
+                });
+            } else {
+                setTimeout(() => {
+                    readerPreloader.classList.remove('active');
+                }, 200);
+            }
+
+            setTimeout(() => {
+                const restImgs = chapter.pages.slice(8).map(p => p.img).filter(Boolean);
+                let pumpIdx = 0;
+                const pump = () => {
+                    if (pumpIdx >= restImgs.length) return;
+                    const chunk = restImgs.slice(pumpIdx, pumpIdx + 4);
+                    pumpIdx += 4;
+                    chunk.forEach(s => {
+                        const pre = new Image();
+                        pre.src = s;
+                    });
+                    setTimeout(pump, 250);
+                };
+                pump();
+            }, 750);
+        }
     }
 
     if (readerChapterSelect) {

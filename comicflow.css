@@ -2698,6 +2698,106 @@ body.reader-active .app-container {
     gap: 6px;
 }
 
+.reader-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #08090d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reader-preloader.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reader-preloader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 320px;
+    padding: 24px;
+}
+
+.reader-preloader-spinner {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(var(--accent-rgb), 0.15);
+    border-top-color: var(--accent);
+    animation: readerSpin 0.75s linear infinite;
+}
+
+@keyframes readerSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    animation: readerPulse 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes readerPulse {
+    from {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+    to {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+.reader-preloader-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+.reader-preloader-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+}
+
+.reader-preloader-progress {
+    width: 180px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.reader-preloader-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.15s ease;
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
+}
+
 .reader-strip-container.mode-page {
     width: 100%;
     max-width: 1000px;
