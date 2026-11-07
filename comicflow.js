@@ -189,9 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentActiveView = 'home';
     let lastMainView = 'home';
-    let currentComicId = 'secret-wars';
+    let currentComicId = 'ultron';
     let currentChapterNum = 1;
-    let currentEventKey = 'secret-wars';
+    let currentEventKey = 'age-of-ultron';
 
     const I18N = {
         ua: {
@@ -223,9 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
             backToDetails: '← До опису коміксу',
             backToCatalog: '← Назад до каталогу',
             langLabel: 'UA',
-            heroTitle: 'SECRET WARS',
+            heroTitle: 'ЕРА АЛЬТРОНА',
             heroBadge: 'Культова подія • Earth-616',
-            heroDesc: 'Зіткнення мультивсесвітів знищило залишки реальності. Залишився лише Світ Битв — планета під абсолютною владою Доктора Дума. Пориньте у культову сагу Джонатана Гікмана та дізнайтеся, як герої борються за відновлення всесвіту.',
+            heroDesc: 'Штучний інтелект Альтрон захопив планету за лічені години. Людство на межі вимирання. Пориньте у культову сагу Браяна Майкла Бендіса та Браяна Гітча та дізнайтеся, як вцілілі герої борються за майбутнє.',
+            heroLogo: 'AGE OF ULTRON',
+            heroAuthor: 'Бендіс • Гітч',
             navHome: 'Головна',
             navSearch: 'Пошук',
             navChronology: 'Хронології',
@@ -341,9 +343,11 @@ document.addEventListener('DOMContentLoaded', () => {
             backToDetails: '← Back to Details',
             backToCatalog: '← Back to Catalog',
             langLabel: 'EN',
-            heroTitle: 'SECRET WARS',
-            heroBadge: 'Iconic Event • Earth-616',
-            heroDesc: 'The multiverse incursions have wiped out all realities. Only Battleworld remains — an amalgamated planet ruled by God Emperor Doom. Experience Jonathan Hickman\'s masterpiece.',
+            heroTitle: 'AGE OF ULTRON',
+            heroBadge: 'Epic Event • Earth-616',
+            heroDesc: 'Artificial Intelligence Ultron has conquered the planet in mere hours. Humanity stands on the brink of extinction. Experience the devastating saga by Brian Michael Bendis and Bryan Hitch.',
+            heroLogo: 'AGE OF ULTRON',
+            heroAuthor: 'Bendis • Hitch',
             navHome: 'Home',
             navSearch: 'Search',
             navChronology: 'Chronology',
@@ -460,9 +464,11 @@ document.addEventListener('DOMContentLoaded', () => {
             backToDetails: '← К описанию комикса',
             backToCatalog: '← Назад в каталог',
             langLabel: 'RU',
-            heroTitle: 'SECRET WARS',
+            heroTitle: 'ЭРА АЛЬТРОНА',
             heroBadge: 'Культовое событие • Earth-616',
-            heroDesc: 'Столкновение мультивселенных уничтожило остатки реальности. Остался лишь Мир Битв — планета под властью Доктора Дума. Погрузитесь в культовую сагу Джонатана Хикмана.',
+            heroDesc: 'Искусственный интеллект Альтрон захватил планету за считанные часы. Человечество на грани вымирания. Погрузитесь в масштабную сагу Брайана Майкла Бендиса и Брайана Хитча и узнайте, как выжившие герои сражаются за будущее.',
+            heroLogo: 'AGE OF ULTRON',
+            heroAuthor: 'Бендис • Хитч',
             navHome: 'Главная',
             navSearch: 'Поиск',
             navChronology: 'Хронологии',
@@ -550,19 +556,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const COMIC_SEARCH_ALIASES = {
+        'ultron': [
+            'age of ultron', 'ultron', 'avengers', 'bendis', 'hitch', 'hawkeye', 'wolverine', 'ai',
+            'эра альтрона', 'альтрон', 'мстители', 'бендис', 'хитч', 'росомаха', 'соколиный глаз', 'ии',
+            'ера альтрона', 'альтрон', 'месники', 'бендіс', 'гітч', 'росомаха', 'соколине око'
+        ],
+        'secret-wars': [
+            'secret wars', 'secret wars 2015', 'doctor doom', 'doom', 'battleworld', 'hickman', 'ribic', 'reed richards',
+            'тайные войны', 'секретные войны', 'доктор дум', 'дум', 'мир битв', 'хикман', 'рибич', 'рид ричардс',
+            'таємні війни', 'доктор дум', 'дум', 'світ битв', 'гікман', 'рибич', 'рід річардс'
+        ],
+        'spider-man': [
+            'spider-man', 'spiderman', 'ultimate spider-man', 'peter parker', 'miles morales', 'bendis', 'bagley',
+            'человек-паук', 'человек паук', 'спайдермен', 'питер паркер', 'майлз моралес', 'бендис', 'бэгли',
+            'людина-павук', 'людина павук', 'спайдермен', 'пітер паркер', 'майлз моралес'
+        ],
+        'house-of-x': [
+            'house of x', 'powers of x', 'x-men', 'xmen', 'mutants', 'krakoa', 'charles xavier', 'magneto', 'hickman', 'larraz',
+            'дом икс', 'люди икс', 'люди-икс', 'мутанты', 'кракоа', 'чарльз ксавьер', 'магнето', 'хикман', 'ларраз',
+            'дім ікс', 'люди ікс', 'мутанти', 'кракоа', 'чарльз ксав\'є', 'магнето', 'гікман'
+        ],
+        'iron-man': [
+            'iron man', 'ironman', 'extremis', 'tony stark', 'avengers', 'warren ellis', 'adi granov',
+            'железный человек', 'тони старк', 'экстремис', 'уоррен эллис', 'ади гранов',
+            'залізна людина', 'тоні старк', 'екстреміс', 'воррен елліс'
+        ],
+        'black-panther': [
+            'black panther', 'panther', 'wakanda', 't-challa', 'ta-nehisi coates', 'brian stelfreeze',
+            'чёрная пантера', 'черная пантера', 'ваканда', 'т-чалла', 'та-нехиси коутс',
+            'чорна пантера', 'ваканда', 'т-чалла', 'коутс'
+        ],
+        'annihilation': [
+            'annihilation', 'annihilus', 'nova', 'richard rider', 'silver surfer', 'thanos', 'drax', 'keith giffen',
+            'аннигиляция', 'аннигилус', 'нова', 'ричард райдер', 'серебряный серфер', 'танос', 'дракс',
+            'анігіляція', 'анігілус', 'нова', 'срібний серфер', 'танос'
+        ],
+        'avengers': [
+            'avengers', 'avengers disassembled', 'brian michael bendis', 'david finch', 'scarlet witch', 'wanda',
+            'мстители', 'мстители распад', 'алая ведьма', 'ванда максимофф', 'бендис', 'финч',
+            'месники', 'месники розпад', 'багряна відьма', 'ванда', 'бендіс'
+        ]
+    };
+
     function detectUserLanguage() {
         const saved = localStorage.getItem('comic_app_language');
-        if (saved && ['ua', 'en', 'ru'].includes(saved)) {
+        if (saved && ['en', 'ua', 'ru'].includes(saved)) {
             return saved;
         }
         const navLangs = navigator.languages || [navigator.language || ''];
         for (const lang of navLangs) {
             const l = (lang || '').toLowerCase();
-            if (l.startsWith('uk')) return 'ua';
-            if (l.startsWith('ru') || l.startsWith('be') || l.startsWith('kk')) return 'ru';
             if (l.startsWith('en')) return 'en';
+            if (l.startsWith('ru') || l.startsWith('be') || l.startsWith('kk')) return 'ru';
+            if (l.startsWith('uk')) return 'ua';
         }
-        return 'ua';
+        return 'en';
     }
 
     let currentAppLanguage = detectUserLanguage();
@@ -1534,11 +1583,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sLang = getResolvedScanLanguage(comic);
         const scanBadgeText = I18N[currentAppLanguage]['scanBadge_' + sLang] || sLang.toUpperCase();
+        const loc = COMIC_I18N[comic.id] || {};
+        const titleText = (loc.title && loc.title[currentAppLanguage]) || comic.title;
+        const authorText = (loc.author && loc.author[currentAppLanguage])
+            || (typeof comic.author === 'object' ? (comic.author[currentAppLanguage] || comic.author.en || comic.author.ua) : comic.author);
+
+        card.dataset.canonicalTitle = comic.title;
+        card.dataset.localTitle = titleText;
 
         card.innerHTML = `
             <div class="card-cover-wrap">
                 <span class="card-lang-pill">${scanBadgeText}</span>
-                ${comic.cover && comic.cover.img ? `<img src="${comic.cover.img}" alt="${comic.title}" class="cover-image-pic">` : `
+                ${comic.cover && comic.cover.img ? `<img src="${comic.cover.img}" alt="${titleText}" class="cover-image-pic">` : `
                 <div class="card-cover-art" style="background: ${comic.cover.bg};">
                     <div class="cover-top-strip">
                         <span class="cover-publisher">${comic.cover.publisher || 'MARVEL'}</span>
@@ -1559,12 +1615,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="card-issue">${comic.issue} <span class="card-year">${comic.year}</span></span>
                 </div>
                 <div class="card-row-top">
-                    <span class="card-title">${comic.title}</span>
+                    <span class="card-title">${titleText}</span>
                 </div>
+                ${currentAppLanguage !== 'en' && comic.title !== titleText ? `<span class="card-orig-title">${comic.title}</span>` : ''}
                 <div class="card-row-bottom">
                     <button class="card-read-btn js-open-title" data-comic-id="${comic.id}">${I18N[currentAppLanguage].readIssue}</button>
                 </div>
-                <span class="card-author" style="display: none;">${typeof comic.author === 'object' ? (comic.author[currentAppLanguage] || comic.author.ua) : comic.author}</span>
+                <span class="card-author" style="display: none;">${authorText}</span>
             </div>
         `;
 
@@ -1594,12 +1651,12 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const raw = localStorage.getItem('comic_reading_progress');
             return raw ? JSON.parse(raw) : {
-                'secret-wars': { chapter: 1, page: 2, totalPages: 4, percent: 50 },
+                'ultron': { chapter: 1, page: 5, totalPages: 116, percent: 4 },
                 'spider-man': { chapter: 1, page: 1, totalPages: 3, percent: 33 }
             };
         } catch {
             return {
-                'secret-wars': { chapter: 1, page: 2, totalPages: 4, percent: 50 },
+                'ultron': { chapter: 1, page: 5, totalPages: 116, percent: 4 },
                 'spider-man': { chapter: 1, page: 1, totalPages: 3, percent: 33 }
             };
         }
@@ -2016,7 +2073,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTimeline(eventKey) {
         if (!timelineFlow) return;
-        const items = EVENT_TIMELINES[eventKey] || EVENT_TIMELINES['secret-wars'];
+        const items = EVENT_TIMELINES[eventKey] || EVENT_TIMELINES['age-of-ultron'];
         timelineFlow.innerHTML = '';
 
         items.forEach(item => {
@@ -2509,7 +2566,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setReaderMode(currentReaderMode);
 
     function applyLanguage(lang) {
-        if (!I18N[lang]) lang = 'ua';
+        if (!I18N[lang]) lang = 'en';
         currentAppLanguage = lang;
         try {
             localStorage.setItem('comic_app_language', lang);
@@ -2556,12 +2613,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const heroDesc = document.querySelector('.hero-content .hero-desc');
         if (heroDesc) heroDesc.textContent = I18N[lang].heroDesc;
         const heroReadBtn = document.querySelector('.hero-content .hero-read-btn');
-        if (heroReadBtn) heroReadBtn.textContent = I18N[lang].toIssues;
+        if (heroReadBtn) {
+            heroReadBtn.textContent = I18N[lang].toIssues;
+            heroReadBtn.dataset.comicId = 'ultron';
+        }
+
+        const posterLogo = document.querySelector('.hero-poster .poster-logo');
+        if (posterLogo) posterLogo.textContent = I18N[lang].heroLogo || 'AGE OF ULTRON';
+        const posterFooter = document.querySelector('.hero-poster .poster-footer');
+        if (posterFooter) {
+            posterFooter.innerHTML = `<span>${I18N[lang].heroAuthor || 'Bendis • Hitch'}</span><span>2013</span>`;
+        }
 
         renderTags();
         renderCatalog();
         renderBookmarksView();
-        renderTimeline(currentEventKey || 'secret-wars');
+        renderTimeline(currentEventKey || 'age-of-ultron');
         renderSearchHistory();
         performSearch(searchInput ? searchInput.value : '');
 
@@ -2575,7 +2642,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (langMenuBtn) {
         langMenuBtn.addEventListener('click', () => {
-            const order = ['ua', 'en', 'ru'];
+            const order = ['en', 'ru', 'ua'];
             const idx = order.indexOf(currentAppLanguage);
             const nextLang = order[(idx + 1) % order.length];
             applyLanguage(nextLang);
@@ -3048,19 +3115,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentCards = Array.from(document.querySelectorAll('#catalog-grid .comic-card'));
 
         currentCards.forEach(card => {
-            const comicData = COMICS_DATA[card.dataset.comicId];
+            const comicId = card.dataset.comicId;
+            const comicData = COMICS_DATA[comicId];
+            const loc = COMIC_I18N[comicId] || {};
+            const aliases = (typeof COMIC_SEARCH_ALIASES !== 'undefined' && COMIC_SEARCH_ALIASES[comicId]) || [];
+
             const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+            const canonicalTitle = (card.dataset.canonicalTitle || comicData?.title || '').toLowerCase();
+            const origTitle = (card.querySelector('.card-orig-title')?.textContent || '').toLowerCase();
             const author = (card.querySelector('.card-author')?.textContent || '').toLowerCase();
             const year = (comicData?.year || '').toLowerCase();
             const issue = (card.querySelector('.card-issue-pill, .card-issue')?.textContent || comicData?.issue || '').toLowerCase();
             const tags = (card.dataset.tags || '').toLowerCase();
 
+            const ruTitle = (loc.title?.ru || '').toLowerCase();
+            const uaTitle = (loc.title?.ua || '').toLowerCase();
+            const enTitle = (loc.title?.en || '').toLowerCase();
+            const ruFull = (loc.fullTitle?.ru || '').toLowerCase();
+            const uaFull = (loc.fullTitle?.ua || '').toLowerCase();
+            const enFull = (loc.fullTitle?.en || '').toLowerCase();
+            const ruAuthor = (loc.author?.ru || '').toLowerCase();
+            const uaAuthor = (loc.author?.ua || '').toLowerCase();
+            const enAuthor = (loc.author?.en || '').toLowerCase();
+
+            const matchesAliases = aliases.some(alias => {
+                const a = alias.toLowerCase();
+                return a.includes(q) || q.includes(a);
+            });
+
             const isMatch = !q ||
                 title.includes(q) ||
+                canonicalTitle.includes(q) ||
+                origTitle.includes(q) ||
+                enTitle.includes(q) ||
+                ruTitle.includes(q) ||
+                uaTitle.includes(q) ||
+                enFull.includes(q) ||
+                ruFull.includes(q) ||
+                uaFull.includes(q) ||
                 author.includes(q) ||
+                enAuthor.includes(q) ||
+                ruAuthor.includes(q) ||
+                uaAuthor.includes(q) ||
                 year.includes(q) ||
                 issue.includes(q) ||
-                tags.includes(q);
+                tags.includes(q) ||
+                matchesAliases;
 
             if (isMatch) {
                 card.classList.remove('hidden');
@@ -3168,9 +3268,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function getBookmarkedComics() {
         try {
             const raw = localStorage.getItem('comic_user_bookmarks');
-            return raw ? JSON.parse(raw) : ['secret-wars', 'spider-man'];
+            return raw ? JSON.parse(raw) : ['ultron', 'spider-man'];
         } catch {
-            return ['secret-wars', 'spider-man'];
+            return ['ultron', 'spider-man'];
         }
     }
 
@@ -3197,7 +3297,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openComicTitle(comicId, shouldUpdateHash = true, direction = 'push') {
-        const comic = COMICS_DATA[comicId] || COMICS_DATA['secret-wars'];
+        const comic = COMICS_DATA[comicId] || COMICS_DATA['ultron'];
         currentComicId = comic.id;
 
         const lang = currentAppLanguage || 'ua';
@@ -3374,7 +3474,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openComicReader(comicId, chapterNum, shouldUpdateHash = true) {
-        const comic = COMICS_DATA[comicId] || COMICS_DATA['secret-wars'];
+        const comic = COMICS_DATA[comicId] || COMICS_DATA['ultron'];
         currentComicId = comic.id;
         currentChapterNum = chapterNum || 1;
 
@@ -3628,7 +3728,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         const heroBtn = e.target.closest('.hero-read-btn');
         if (heroBtn) {
-            const comicId = heroBtn.dataset.comicId || 'secret-wars';
+            const comicId = heroBtn.dataset.comicId || 'ultron';
             openComicTitle(comicId);
             return;
         }
@@ -3646,7 +3746,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const openReaderBtn = e.target.closest('.js-open-reader');
         if (openReaderBtn) {
             e.stopPropagation();
-            const comicId = openReaderBtn.dataset.comicId || 'secret-wars';
+            const comicId = openReaderBtn.dataset.comicId || 'ultron';
             openComicReader(comicId, 1);
             return;
         }
@@ -3713,7 +3813,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (settingsModal && settingsModal.classList.contains('open')) closeSettings(false);
             const clean = hash.replace('reader=', '');
             const parts = clean.split('&');
-            const comicId = parts[0] || 'secret-wars';
+            const comicId = parts[0] || 'ultron';
             let chNum = 1;
             if (parts[1] && parts[1].startsWith('ch=')) {
                 chNum = parseInt(parts[1].replace('ch=', ''), 10) || 1;

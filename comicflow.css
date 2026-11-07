@@ -1540,6 +1540,17 @@ body:has(#settings-modal.open) .nav-btn[data-view="settings"] svg path {
     width: 100%;
 }
 
+.card-orig-title {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 1px;
+    letter-spacing: 0.02em;
+}
+
 .card-row-bottom {
     display: flex;
     align-items: center;
