@@ -17,15 +17,14 @@
     <link rel="stylesheet" href="comicflow.css">
     <script>
         try {
-            const a = localStorage.getItem('comicflow_accent');
-            if (a) {
-                document.documentElement.style.setProperty('--accent', a);
-                const h = a.replace('#', '');
-                const r = parseInt(h.substring(0, 2), 16);
-                const g = parseInt(h.substring(2, 4), 16);
-                const b = parseInt(h.substring(4, 6), 16);
-                document.documentElement.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
-            }
+            const a = localStorage.getItem('comic_theme_color') || localStorage.getItem('comicflow_accent') || '#E62429';
+            document.documentElement.style.setProperty('--accent', a);
+            const h = a.replace('#', '');
+            const r = parseInt(h.substring(0, 2), 16) || 230;
+            const g = parseInt(h.substring(2, 4), 16) || 36;
+            const b = parseInt(h.substring(4, 6), 16) || 41;
+            const rgb = localStorage.getItem('comic_theme_rgb') || `${r}, ${g}, ${b}`;
+            document.documentElement.style.setProperty('--accent-rgb', rgb);
         } catch (_) { }
     </script>
     <script src="comicflow.js" defer></script>
